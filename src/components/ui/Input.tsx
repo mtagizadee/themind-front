@@ -6,6 +6,7 @@ interface IInputProps {
   type?: string;
   placeholder?: string;
   label?: string;
+  className?: string;
 }
 
 /**
@@ -13,9 +14,9 @@ interface IInputProps {
  * @param IInputProps
  * @returns JSX.Element
  */
-const Input: FC<IInputProps> = ({ id, name, type = "text", placeholder, label }) => {
+const Input: FC<IInputProps> = ({ id, name, type = "text", placeholder, label, className }) => {
   return (
-    <div>
+    <div className={className}>
       <label htmlFor={id || name}> {label} </label>
       <input type={type} placeholder={placeholder} id={id || name} name={name} />
     </div>
