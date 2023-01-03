@@ -7,6 +7,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AddUserPage />} />
+        <Route path="/create-lobby" element={<div> Create lobby </div>} />
       </Routes>
     </BrowserRouter>
   );

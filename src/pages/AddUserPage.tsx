@@ -1,11 +1,16 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import { ErrorKey, TValidationError, VALIDATION_ERROR_INITIAL_STATE } from "../common/types";
 import Box from "../components/ui/Box";
 import Input from "../components/ui/Input";
 import { lengthRange, isNotEmpty, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH } from "../validators";
+import { AuthController } from "../api";
+import { AuthContext } from "../contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const AddUserPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
+  const { authorize } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,6 +32,17 @@ const AddUserPage = () => {
     }
 
     setError(VALIDATION_ERROR_INITIAL_STATE);
+    try {
+      const authToken = await AuthController.addUser(nickname);
+
+      localStorage.setItem("authToken", authToken);
+      authorize();
+
+      navigate("/create-lobby");
+    } catch (error) {
+      // TODO: handle error\
+      console.log(error);
+    }
   };
 
   return (
