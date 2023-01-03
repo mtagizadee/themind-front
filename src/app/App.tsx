@@ -1,10 +1,14 @@
 import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AddUserPage from "../pages/AddUserPage";
 
 const App = () => {
   return (
-    <div className="flex items-center justify-center h-screen w-screen font-bold text-xl">
-      <div>Init</div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AddUserPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
