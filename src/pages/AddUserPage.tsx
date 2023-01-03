@@ -1,11 +1,11 @@
 import React, { FormEvent, useState } from "react";
-import { ErrorKey, ValidationError, VALIDATION_ERROR_INITIAL_STATE } from "../common/types";
+import { ErrorKey, TValidationError, VALIDATION_ERROR_INITIAL_STATE } from "../common/types";
 import Box from "../components/ui/Box";
 import Input from "../components/ui/Input";
 import { lengthRange, isNotEmpty, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH } from "../validators";
 
 const AddUserPage = () => {
-  const [error, setError] = useState<ValidationError>(VALIDATION_ERROR_INITIAL_STATE);
+  const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

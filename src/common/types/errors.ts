@@ -4,12 +4,12 @@ export enum ErrorKey {
   NL = "nickname length",
 }
 
-export type ValidationError = {
+export type TValidationError = {
   key: ErrorKey;
   message: string;
 };
 
-export const VALIDATION_ERROR_INITIAL_STATE: ValidationError = {
+export const VALIDATION_ERROR_INITIAL_STATE: TValidationError = {
   key: ErrorKey.NE,
   message: "",
 };
