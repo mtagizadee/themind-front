@@ -7,6 +7,7 @@ import { AuthController } from "../api";
 import { AuthContext } from "../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import Popup, { PopupType } from "../components/ui/Popup";
+import Button from "../components/ui/Button";
 
 const AddUserPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
@@ -59,7 +60,7 @@ const AddUserPage = () => {
               name="nickname"
               label="Enter your nickname"
             />
-            <button type="submit"> Submit </button>
+            <Button type="submit"> Submit </Button>
           </form>
         </Box>
       </div>
