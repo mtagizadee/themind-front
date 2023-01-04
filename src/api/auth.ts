@@ -1,6 +1,11 @@
 import { publicApi } from "./config";
 
 export class AuthController {
+  /**
+   * Sends a request to the server to add a new user
+   * @param nickname string
+   * @returns jwtToken
+   */
   static async addUser(nickname: string) {
     const url = "/auth/add-user";
     const response = await publicApi.post(url, { nickname });

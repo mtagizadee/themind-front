@@ -9,6 +9,7 @@ import Popup, { PopupType } from "../components/ui/Popup";
 import Button from "../components/ui/Button";
 import useLoading from "../hooks/useLoading";
 import useAuth from "../hooks/useAuth";
+import { privateRoutes } from "../common/routes";
 
 const AddUserPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
@@ -23,7 +24,7 @@ const AddUserPage = () => {
       localStorage.setItem("authToken", authToken);
       authorize();
 
-      navigate("/create-lobby");
+      navigate(privateRoutes.createLobbyPage);
     },
     () => {
       setPopup(true);
