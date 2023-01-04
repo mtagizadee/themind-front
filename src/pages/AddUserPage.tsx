@@ -8,12 +8,27 @@ import { AuthContext } from "../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import Popup, { PopupType } from "../components/ui/Popup";
 import Button from "../components/ui/Button";
+import useLoading from "../hooks/useLoading";
 
 const AddUserPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
   const { authorize } = useContext(AuthContext);
   const navigate = useNavigate();
   const [popup, setPopup] = useState(false);
+
+  const { execute, isLoading } = useLoading(
+    async (nickname: string) => {
+      const authToken = await AuthController.addUser(nickname);
+
+      localStorage.setItem("authToken", authToken);
+      authorize();
+
+      navigate("/create-lobby");
+    },
+    () => {
+      setPopup(true);
+    }
+  );
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,16 +50,7 @@ const AddUserPage = () => {
     }
 
     setError(VALIDATION_ERROR_INITIAL_STATE);
-    try {
-      const authToken = await AuthController.addUser(nickname);
-
-      localStorage.setItem("authToken", authToken);
-      authorize();
-
-      navigate("/create-lobby");
-    } catch (error) {
-      setPopup(true);
-    }
+    await execute(nickname);
   };
 
   return (
@@ -60,7 +66,9 @@ const AddUserPage = () => {
               name="nickname"
               label="Enter your nickname"
             />
-            <Button type="submit"> Submit </Button>
+            <Button type="submit" disabled={isLoading}>
+              Submit
+            </Button>
           </form>
         </Box>
       </div>

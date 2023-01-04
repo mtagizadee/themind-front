@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-const useLoading = (callback: (...args: any) => void, onError: (error: any) => void) => {
+const useLoading = (callback: (...args: any) => Promise<void>, onError: (error: any) => void) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const execute = () => {
+  const execute = async (...args: any) => {
     try {
       setIsLoading(true);
-      callback();
+      await callback(...args);
     } catch (error) {
       onError(error);
     } finally {
@@ -14,7 +14,7 @@ const useLoading = (callback: (...args: any) => void, onError: (error: any) => v
     }
   };
 
-  return { execute, isLoading };
+  return { execute, isLoading } as { execute: (...args: any) => Promise<void>; isLoading: boolean };
 };
 
 export default useLoading;
