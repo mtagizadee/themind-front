@@ -1,18 +1,18 @@
-import React, { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { ErrorKey, TValidationError, VALIDATION_ERROR_INITIAL_STATE } from "../common/types";
 import Box from "../components/ui/Box";
 import Input from "../components/ui/Input";
 import { lengthRange, isNotEmpty, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH } from "../validators";
 import { AuthController } from "../api";
-import { AuthContext } from "../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import Popup, { PopupType } from "../components/ui/Popup";
 import Button from "../components/ui/Button";
 import useLoading from "../hooks/useLoading";
+import useAuth from "../hooks/useAuth";
 
 const AddUserPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
-  const { authorize } = useContext(AuthContext);
+  const { authorize } = useAuth();
   const navigate = useNavigate();
   const [popup, setPopup] = useState(false);
 

@@ -1,5 +1,13 @@
 import { useState } from "react";
 
+type TReturn = { execute: (...args: any) => Promise<void>; isLoading: boolean };
+
+/**
+ * Custom hook to handle loading state for async functions
+ * @param callback - async function to be executed
+ * @param onError - function to be executed when an error occurs
+ * @returns TReturn - { execute: (...args: any) => Promise<void>; isLoading: boolean }
+ */
 const useLoading = (callback: (...args: any) => Promise<void>, onError: (error: any) => void) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -14,7 +22,7 @@ const useLoading = (callback: (...args: any) => Promise<void>, onError: (error: 
     }
   };
 
-  return { execute, isLoading } as { execute: (...args: any) => Promise<void>; isLoading: boolean };
+  return { execute, isLoading } as TReturn;
 };
 
 export default useLoading;
