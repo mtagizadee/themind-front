@@ -3,5 +3,5 @@ export const privateRoutes = {
 };
 
 export const publicRoutes = {
-  addUserPage: "/add-user",
+  addUserPage: "/",
 };

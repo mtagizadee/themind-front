@@ -21,7 +21,7 @@ const App = () => {
 const PrivateRoutes = () => {
   const { auth } = useAuth();
 
-  return auth ? <Outlet /> : <Navigate to="/" />;
+  return auth ? <Outlet /> : <Navigate to="/" />; // TODO: decide to which page is should lead
 };
 
 export default App;
