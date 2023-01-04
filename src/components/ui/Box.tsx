@@ -9,6 +9,10 @@ interface IBoxProps {
  * Box UI compoent for displaying content in a box
  * @param IBoxProps
  * @returns JSX.Element
+ * @example
+ * <Box className="w-full max-w-[300px]">
+ *  <div> Some content here </div>
+ * </Box>
  */
 const Box: FC<IBoxProps> = ({ children, className }) => {
   return (

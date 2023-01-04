@@ -8,6 +8,12 @@ interface IInputProps {
   placeholder?: string;
   label?: string;
   className?: string;
+  /**
+   * If true, error styles will be applied to the input
+   * and error message will be displayed
+   * @example
+   * <Input error={true} errorMessage="Error message"/>
+   */
   error?: boolean;
   errorMessage?: string;
 }

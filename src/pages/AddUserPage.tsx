@@ -6,11 +6,13 @@ import { lengthRange, isNotEmpty, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH } fro
 import { AuthController } from "../api";
 import { AuthContext } from "../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import Popup, { PopupType } from "../components/ui/Popup";
 
 const AddUserPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
   const { authorize } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [popup, setPopup] = useState(false);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,27 +42,34 @@ const AddUserPage = () => {
 
       navigate("/create-lobby");
     } catch (error) {
-      // TODO: handle error\
-      console.log(error);
+      setPopup(true);
     }
   };
 
   return (
-    <div className="center-content full-screen">
-      <Box className="w-full max-w-[600px] ">
-        <h1 className="text-center"> Welcome ! </h1>
-        <form onSubmit={onSubmit}>
-          <Input
-            error={error.key !== ErrorKey.NE}
-            errorMessage={error.message}
-            className="my-6"
-            name="nickname"
-            label="Enter your nickname"
-          />
-          <button type="submit"> Submit </button>
-        </form>
-      </Box>
-    </div>
+    <>
+      <div className="center-content full-screen">
+        <Box className="w-full max-w-[600px] ">
+          <h1 className="text-center"> Welcome ! </h1>
+          <form onSubmit={onSubmit}>
+            <Input
+              error={error.key !== ErrorKey.NE}
+              errorMessage={error.message}
+              className="my-6"
+              name="nickname"
+              label="Enter your nickname"
+            />
+            <button type="submit"> Submit </button>
+          </form>
+        </Box>
+      </div>
+      <Popup
+        type={PopupType.Error}
+        message="Could not add your nickname, please try again later on..."
+        onClose={() => setPopup(false)}
+        visible={popup}
+      />
+    </>
   );
 };
 
