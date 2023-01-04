@@ -12,7 +12,7 @@ interface IAuthProviderProps {
 }
 
 const AuthProvider: FC<IAuthProviderProps> = ({ children }) => {
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(!!localStorage.getItem("authToken"));
 
   const authorize = () => {
     setAuth(true);
