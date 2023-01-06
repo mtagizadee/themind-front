@@ -1,7 +1,5 @@
 import React, { createContext, ReactNode, useState, FC, useEffect } from "react";
-import { useNavigate } from "react-router";
 import { AuthController } from "../api";
-import { publicRoutes } from "../common/routes";
 import useAuth from "../hooks/useAuth";
 import Popup, { PopupType } from "../components/ui/Popup";
 
@@ -25,7 +23,6 @@ const UserProvider: FC<IUserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<TUserContext>({} as any);
   const [popup, setPopup] = useState(false);
   const { unauthorize } = useAuth();
-  const navigate = useNavigate();
 
   const clear = () => {
     setUser({} as any);
@@ -39,9 +36,8 @@ const UserProvider: FC<IUserProviderProps> = ({ children }) => {
       })
       .catch(() => {
         // if the user is not authorized, logout the user
-        unauthorize();
-        navigate(publicRoutes.addUserPage);
         localStorage.clear();
+        unauthorize();
       });
 
     return () => {
