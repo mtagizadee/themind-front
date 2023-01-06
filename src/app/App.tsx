@@ -4,6 +4,7 @@ import { privateRoutes, publicRoutes } from "../common/routes";
 import useAuth from "../hooks/useAuth";
 import AddUserPage from "../pages/AddUserPage";
 import CreateLobbyPage from "../pages/CreateLobbyPage";
+import UserProvider from "../contexts/UserProvider";
 
 const App = () => {
   return (
@@ -11,7 +12,9 @@ const App = () => {
       <Routes>
         <Route path={publicRoutes.addUserPage} element={<AddUserPage />} />
         <Route element={<PrivateRoutes />}>
-          <Route path={privateRoutes.createLobbyPage} element={<CreateLobbyPage />} />
+          <UserProvider>
+            <Route path={privateRoutes.createLobbyPage} element={<CreateLobbyPage />} />
+          </UserProvider>
         </Route>
       </Routes>
     </BrowserRouter>

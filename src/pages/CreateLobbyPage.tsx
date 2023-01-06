@@ -6,11 +6,23 @@ import Button from "../components/ui/Button";
 import { ErrorKey, TValidationError, VALIDATION_ERROR_INITIAL_STATE } from "../common/types";
 import { useNavigate } from "react-router";
 import { isInteger, isNotEmpty, MAX_NUMBER_OF_PLAYERS, MIN_NUMBER_OF_PLAYERS } from "../validators";
+import useLoading from "../hooks/useLoading";
+import { LobbiesController } from "../api";
 
 const CreateLobbyPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
   const [popup, setPopup] = useState(false);
   const navigate = useNavigate();
+
+  const { execute, isLoading } = useLoading(
+    async (numberOfPlayers: number) => {
+      const lobbyId = await LobbiesController.create(numberOfPlayers);
+      navigate(`/lobbies/${lobbyId}`);
+    },
+    () => {
+      setPopup(true);
+    }
+  );
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,7 +49,7 @@ const CreateLobbyPage = () => {
     }
 
     setError(VALIDATION_ERROR_INITIAL_STATE);
-    navigate("/lobby");
+    await execute(numberOfPlayers);
   };
 
   return (
@@ -56,7 +68,9 @@ const CreateLobbyPage = () => {
               type="number"
             />
 
-            <Button type="submit"> Submit </Button>
+            <Button type="submit" disabled={isLoading}>
+              Submit
+            </Button>
           </form>
         </Box>
       </div>
