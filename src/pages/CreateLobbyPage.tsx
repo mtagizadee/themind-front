@@ -26,7 +26,7 @@ const CreateLobbyPage = () => {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const numberOfPlayers = event.currentTarget.numberOfPlayers.value;
+    const numberOfPlayers = Number(event.currentTarget.numberOfPlayers.value);
 
     if (!isNotEmpty(numberOfPlayers)) {
       setError({ key: ErrorKey.NOPR, message: "Number of players is required" });

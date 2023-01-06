@@ -7,7 +7,7 @@ export class LobbiesController {
    * @returns id of the created lobby
    */
   static async create(playersNumber: number) {
-    const url = "/create";
+    const url = "/lobbies";
     const response = await privateApi.post(url, { playersNumber });
     return response.data.id;
   }
