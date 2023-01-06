@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import { isInteger, isNotEmpty, MAX_NUMBER_OF_PLAYERS, MIN_NUMBER_OF_PLAYERS } from "../validators";
 import useLoading from "../hooks/useLoading";
 import { LobbiesController } from "../api";
+import { privateRoutes } from "../common/routes";
 
 const CreateLobbyPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
@@ -17,7 +18,7 @@ const CreateLobbyPage = () => {
   const { execute, isLoading } = useLoading(
     async (numberOfPlayers: number) => {
       const lobbyId = await LobbiesController.create(numberOfPlayers);
-      navigate(`/lobbies/${lobbyId}`);
+      navigate(`${privateRoutes.lobbies}/${lobbyId}`);
     },
     () => {
       setPopup(true);
