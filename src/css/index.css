@@ -4,6 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 @layer base {
   body {
     @apply bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-400 font-inter;
@@ -55,5 +65,9 @@
 
   .full-screen {
     @apply w-full h-screen;
+  }
+
+  .box-600 {
+    @apply w-full max-w-[600px];
   }
 }

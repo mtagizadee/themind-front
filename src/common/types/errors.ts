@@ -2,6 +2,9 @@ export enum ErrorKey {
   NE = "no error",
   NR = "nickname required",
   NL = "nickname length",
+  NOPR = "number of players required",
+  NOL = "number of players length",
+  NOPNI = "number of players not integer",
 }
 
 export type TValidationError = {

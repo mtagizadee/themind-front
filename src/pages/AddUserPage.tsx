@@ -57,7 +57,7 @@ const AddUserPage = () => {
   return (
     <>
       <div className="center-content full-screen">
-        <Box className="w-full max-w-[600px] ">
+        <Box className="box-600 ">
           <h1 className="text-center"> Welcome ! </h1>
           <form onSubmit={onSubmit}>
             <Input

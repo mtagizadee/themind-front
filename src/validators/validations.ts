@@ -9,3 +9,7 @@ export const isNotEmpty = (value: any | any[]) => {
 export const lengthRange = (min: number, max: number) => (value: string) => {
   return value.length >= min && value.length <= max;
 };
+
+export const isInteger = (value: any) => {
+  return Number.isInteger(value);
+};
