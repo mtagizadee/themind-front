@@ -5,19 +5,22 @@ import useAuth from "../hooks/useAuth";
 import AddUserPage from "../pages/AddUserPage";
 import CreateLobbyPage from "../pages/CreateLobbyPage";
 import UserProvider from "../contexts/UserProvider";
+import BasicLayout from "../components/layout/BasicLayout";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path={publicRoutes.addUserPage} element={<AddUserPage />} />
-        <Route element={<PrivateRoutes />}>
-          <Route element={<UserLayout />}>
-            <Route path={privateRoutes.createLobbyPage} element={<CreateLobbyPage />} />
-            <Route path={`${privateRoutes.lobbies}/:id`} element={<div> Lobbies Page </div>} />
+      <BasicLayout>
+        <Routes>
+          <Route path={publicRoutes.addUserPage} element={<AddUserPage />} />
+          <Route element={<PrivateRoutes />}>
+            <Route element={<UserLayout />}>
+              <Route path={privateRoutes.createLobbyPage} element={<CreateLobbyPage />} />
+              <Route path={`${privateRoutes.lobbies}/:id`} element={<div> Lobbies Page </div>} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </BasicLayout>
     </BrowserRouter>
   );
 };
