@@ -11,6 +11,11 @@ interface IAuthProviderProps {
   children: ReactNode;
 }
 
+/**
+ * AuthProvider is a provider which keeps track of the authentication state
+ * @param IAuthProviderProps children of the provider\
+ * @returns JSX.Element which is the provider
+ */
 const AuthProvider: FC<IAuthProviderProps> = ({ children }) => {
   const [auth, setAuth] = useState(!!localStorage.getItem("authToken"));
 

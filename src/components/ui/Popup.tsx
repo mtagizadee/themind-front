@@ -6,6 +6,12 @@ export enum PopupType {
   Error,
 }
 
+export const POPUP_INITAL_STATE = {
+  message: "",
+  type: PopupType.Error,
+  visible: false,
+};
+
 interface IPopupProps {
   message: string;
   /**
@@ -65,8 +71,10 @@ const Popup: FC<IPopupProps> = ({ message, type, visible = false, onClose, timeo
           >
             {type === PopupType.Success ? <FiCheckSquare /> : <FiAlertCircle />}
           </div>
-          <div className="ml-3 text-sm font-normal">{message}</div>
-          <FiX className="cursor-pointer" size={30} onClick={onClose} />
+          <div className="w-full center-row justify-between">
+            <div className="ml-3 text-sm font-normal">{message}</div>
+            <FiX className="cursor-pointer" size={30} onClick={onClose} />
+          </div>
         </div>
       ) : null}
     </>
