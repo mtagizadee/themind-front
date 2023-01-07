@@ -48,7 +48,15 @@ input[type="number"] {
 
 @layer components {
   .menu-item-box {
-    @apply cursor-pointer text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5;
+    @apply cursor-pointer w-full flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5;
+  }
+
+  .red-button {
+    @apply text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium text-sm;
+  }
+
+  .dark-button {
+    @apply bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 text-gray-900;
   }
 }
 
@@ -70,6 +78,14 @@ input[type="number"] {
   }
 
   .box-600 {
-    @apply w-full max-w-[600px];
+    @apply w-screen max-w-[600px];
+  }
+
+  .box-500 {
+    @apply w-screen max-w-[500px];
+  }
+
+  .box-400 {
+    @apply w-screen max-w-[400px];
   }
 }

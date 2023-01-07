@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 
 type TColorTheme = "light" | "dark";
 
+/**
+ * ThemeSwitch to change keep track of theme state and change it
+ * @returns JSX.Element - theme switch button
+ */
 const ThemeSwitch = () => {
   const html = document.querySelector("html");
   const [theme, setTheme] = useState<TColorTheme>(

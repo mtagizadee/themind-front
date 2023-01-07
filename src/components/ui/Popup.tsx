@@ -59,7 +59,7 @@ const Popup: FC<IPopupProps> = ({ message, type, visible = false, onClose, timeo
       {visible ? (
         <div
           id="toast-default"
-          className="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 absolute top-6 right-6"
+          className="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 absolute top-6 right-6 z-40"
           role="alert"
         >
           <div
