@@ -34,7 +34,7 @@ privateApi.interceptors.response.use(
   (config) => config,
   (error) => {
     if (error.response.status === 401) {
-      localStorage.clear();
+      localStorage.removeItem("authToken");
       window.location.href = publicRoutes.addUserPage;
     }
     return Promise.reject(error);

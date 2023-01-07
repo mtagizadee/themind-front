@@ -36,7 +36,7 @@ const UserProvider: FC<IUserProviderProps> = ({ children }) => {
       })
       .catch(() => {
         // if the user is not authorized, logout the user
-        localStorage.clear();
+        localStorage.removeItem("authToken");
         unauthorize();
       });
 
