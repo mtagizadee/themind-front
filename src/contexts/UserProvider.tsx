@@ -8,7 +8,7 @@ export type TUserContext = {
   nickname: string;
 };
 
-const UserContext = createContext<TUserContext>({} as any);
+export const UserContext = createContext<TUserContext>({} as any);
 
 interface IUserProviderProps {
   children: ReactNode;
