@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import Box from "../components/ui/Box";
+import useLobby from "../hooks/useLobby";
 
 type TLobbyPageParams = {
   id: string;
@@ -8,6 +9,7 @@ type TLobbyPageParams = {
 
 const LobbyPage = () => {
   const { id } = useParams<TLobbyPageParams>();
+  const {} = useLobby(id);
 
   return (
     <div className="center-content">
