@@ -77,6 +77,14 @@ input[type="number"] {
     @apply w-full h-screen;
   }
 
+  .box-800 {
+    @apply w-screen max-w-[800px];
+  }
+
+  .box-700 {
+    @apply w-screen max-w-[700px];
+  }
+
   .box-600 {
     @apply w-screen max-w-[600px];
   }

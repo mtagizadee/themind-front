@@ -17,7 +17,11 @@ const App = () => {
           <Route element={<PrivateRoutes />}>
             <Route element={<UserLayout />}>
               <Route path={privateRoutes.lobbiesRoutes.index}>
-                <Route path={privateRoutes.lobbiesRoutes.create} element={<CreateLobbyPage />} />
+                <Route
+                  index
+                  path={privateRoutes.lobbiesRoutes.create}
+                  element={<CreateLobbyPage />}
+                />
                 <Route path={privateRoutes.lobbiesRoutes.lobby()} element={<LobbyPage />} />
               </Route>
             </Route>

@@ -11,4 +11,10 @@ export class LobbiesController {
     const response = await privateApi.post(url, { playersNumber });
     return response.data.id;
   }
+
+  static async getOne(id: string) {
+    const url = `/lobbies/${id}`;
+    const response = await privateApi.get(url);
+    return response.data;
+  }
 }
