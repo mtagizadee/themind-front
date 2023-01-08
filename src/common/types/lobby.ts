@@ -19,3 +19,11 @@ export const lobbyFactory = (data: TLobbyResponseData): TLobby => {
     playersNumber: data.playersNumber,
   };
 };
+
+export const lobbyCleaner = (): TLobby => {
+  return {
+    authorId: "",
+    players: [],
+    playersNumber: 0,
+  };
+};
