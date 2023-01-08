@@ -6,6 +6,7 @@ import AddUserPage from "../pages/AddUserPage";
 import CreateLobbyPage from "../pages/CreateLobbyPage";
 import UserProvider from "../contexts/UserProvider";
 import BasicLayout from "../components/layout/BasicLayout";
+import LobbyPage from "../pages/LobbyPage";
 
 const App = () => {
   return (
@@ -15,8 +16,10 @@ const App = () => {
           <Route path={publicRoutes.addUserPage} element={<AddUserPage />} />
           <Route element={<PrivateRoutes />}>
             <Route element={<UserLayout />}>
-              <Route path={privateRoutes.createLobbyPage} element={<CreateLobbyPage />} />
-              <Route path={`${privateRoutes.lobbies}/:id`} element={<div> Lobbies Page </div>} />
+              <Route path={privateRoutes.lobbiesRoutes.index}>
+                <Route path={privateRoutes.lobbiesRoutes.create} element={<CreateLobbyPage />} />
+                <Route path={privateRoutes.lobbiesRoutes.lobby()} element={<LobbyPage />} />
+              </Route>
             </Route>
           </Route>
         </Routes>

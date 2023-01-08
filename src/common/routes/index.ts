@@ -1,6 +1,13 @@
 export const privateRoutes = {
-  createLobbyPage: "/create-lobby",
-  lobbies: "/lobbies",
+  lobbiesRoutes: {
+    index: "/lobbies",
+    get create() {
+      return `${this.index}/create`;
+    },
+    lobby(id = ":id") {
+      return `${this.index}/${id}`;
+    },
+  },
 };
 
 export const publicRoutes = {

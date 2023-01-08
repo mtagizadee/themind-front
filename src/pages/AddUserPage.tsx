@@ -24,8 +24,7 @@ const AddUserPage = () => {
       localStorage.setItem("authToken", authToken);
       authorize();
 
-      // TODO: decide if where to redirect the user
-      navigate(privateRoutes.createLobbyPage);
+      navigate(privateRoutes.lobbiesRoutes.create);
     },
     () => {
       setPopup(true);

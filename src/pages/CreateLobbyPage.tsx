@@ -18,7 +18,7 @@ const CreateLobbyPage = () => {
   const { execute, isLoading } = useLoading(
     async (numberOfPlayers: number) => {
       const lobbyId = await LobbiesController.create(numberOfPlayers);
-      navigate(`${privateRoutes.lobbies}/${lobbyId}`);
+      navigate(privateRoutes.lobbiesRoutes.lobby(lobbyId));
     },
     () => {
       setPopup(true);
