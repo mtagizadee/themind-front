@@ -14,6 +14,7 @@ interface IButtonProps {
    */
   disabled?: boolean;
   color?: ButtonColor;
+  className?: string;
 }
 
 const colorToStyle = {
@@ -32,12 +33,14 @@ const Button: FC<IButtonProps> = ({
   onClick,
   disabled = false,
   color = "dark",
+  className,
 }) => {
   return (
     <button
       className={twMerge(
         "w-full px-5 py-2.5 rounded-lg text-sm font-medium focus:outline-none",
-        colorToStyle[color]
+        colorToStyle[color],
+        className
       )}
       type={type}
       onClick={onClick}

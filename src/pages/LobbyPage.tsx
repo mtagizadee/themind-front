@@ -7,6 +7,10 @@ import { AxiosError } from "axios";
 import { publicRoutes } from "../common/routes";
 import { isNotEmpty } from "../validators";
 import { Light, Mikasa, Power, Purple } from "../assets/players";
+import { FiX } from "react-icons/fi";
+import WarningModal from "../components/ui/WarningModal";
+import useToggle from "../hooks/useToggle";
+import Button from "../components/ui/Button";
 
 type TLobbyPageParams = {
   id: string;
@@ -15,6 +19,8 @@ type TLobbyPageParams = {
 const LobbyPage = () => {
   const { id } = useParams<TLobbyPageParams>();
   const { lobby, isLoading, error } = useLobby(id as any);
+  const [backWarningModal, openBackWarningModal, closeBackWarningModal] = useToggle();
+  const [startWarningModal, openStartWarningModal, closeStartWarningModal] = useToggle();
 
   // Handle loading and error
   if (isLoading) return <PageLoader />;
@@ -22,28 +28,65 @@ const LobbyPage = () => {
     return <Navigate to={publicRoutes.notFoundPage} />;
 
   return (
-    <div className="center-content">
-      <Box className="box-700">
-        <h1> Lobby </h1>
-        <p>
-          Expires at: <time> {lobby.expiresAt} </time>
-        </p>
+    <>
+      <div className="center-content">
+        <Box className="box-700 relative">
+          <FiX
+            className="cursor-pointer absolute right-6 top-6 w-6 h-6"
+            onClick={() => openBackWarningModal()}
+          />
+          <section>
+            <h1> Lobby </h1>
+            <p>
+              Expires at: <time> {lobby.expiresAt} </time>
+            </p>
+            <hr className="mb-6 mt-3 border-gray-700" />
+          </section>
 
-        <ul>
-          {isNotEmpty(lobby.players)
-            ? lobby.players.map((player, index) => (
-                // eslint-disable-line
-                <InvitedPlayer // eslint-disable-line
-                  order={index + 1} // eslint-disable-line
-                  isAdmin={player.id === lobby.authorId} // eslint-disable-line
-                  key={player.id} // eslint-disable-line
-                  nickname={player.nickname} // eslint-disable-line
-                /> // eslint-disable-line
-              )) // eslint-disable-line
-            : null}
-        </ul>
-      </Box>
-    </div>
+          <section className="mb-6">
+            <p className="text-sm">
+              Players: {lobby.players.length} / {lobby.playersNumber}
+            </p>
+            <ul>
+              {isNotEmpty(lobby.players)
+                ? lobby.players.map((player, index) => (
+                    // eslint-disable-line
+                    <InvitedPlayer // eslint-disable-line
+                      order={index + 1} // eslint-disable-line
+                      isAdmin={player.id === lobby.authorId} // eslint-disable-line
+                      key={player.id} // eslint-disable-line
+                      nickname={player.nickname} // eslint-disable-line
+                    /> // eslint-disable-line
+                  )) // eslint-disable-line
+                : null}
+            </ul>
+          </section>
+          <div className="center-row gap-6">
+            <Button> Invite a player </Button>
+            <Button onClick={() => openStartWarningModal()}> Start </Button>
+          </div>
+        </Box>
+      </div>
+      <WarningModal
+        visible={backWarningModal}
+        onConfirm={() => {
+          // TODO: Leave lobby
+        }}
+        onClose={() => closeBackWarningModal()}
+      >
+        Are you sure you want to leave the lobby?
+      </WarningModal>
+      <WarningModal
+        visible={startWarningModal}
+        onConfirm={() => {
+          // TODO: Start the game
+        }}
+        onClose={() => closeStartWarningModal()}
+      >
+        Are you sure you want to start the game? You will not be able to invite anyone else after
+        the game starts.
+      </WarningModal>
+    </>
   );
 };
 
@@ -53,6 +96,12 @@ interface IInvitedPlayerProps {
   order: number;
 }
 
+/**
+ * Map of order to player data
+ * @important
+ * This data is static and cannot be changed.
+ * It is used only for image and description of the player in lobby
+ */
 const orderToPlayerData = {
   1: {
     image: Mikasa,
@@ -72,6 +121,11 @@ const orderToPlayerData = {
   },
 };
 
+/**
+ * Component to display a joined player in the lobby
+ * @param IInvitedPlayerProps
+ * @returns JSX.Element
+ */
 const InvitedPlayer: FC<IInvitedPlayerProps> = ({ nickname, isAdmin, order }) => {
   const orderData = (orderToPlayerData as any)[order];
 
