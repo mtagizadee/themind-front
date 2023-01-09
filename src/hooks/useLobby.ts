@@ -23,10 +23,18 @@ const useLobby = (id: string): TUseLobbyResponse => {
   });
 
   useEffect(() => {
-    fetchLobby();
+    // if you was able to get the lobby, join it
+    fetchLobby().then(() => {
+      LobbiesController.join(id)
+        .then((wsToken) => {
+          localStorage.setItem("wsToken", wsToken);
+        })
+        .catch((error) => console.error(error));
+    });
 
     return () => {
       setLobby(lobbyCleaner());
+      LobbiesController.leave(id);
     };
   }, [id]);
 

@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Box from "../components/ui/Box";
 import useLobby from "../hooks/useLobby";
 import PageLoader from "../components/PageLoader";
 import { AxiosError } from "axios";
-import { publicRoutes } from "../common/routes";
+import { privateRoutes, publicRoutes } from "../common/routes";
 import { isNotEmpty } from "../validators";
 import { Light, Mikasa, Power, Purple } from "../assets/players";
 import { FiX, FiCopy } from "react-icons/fi";
@@ -15,6 +15,7 @@ import DefaultModal from "../components/ui/DefaultModal";
 import useLoading from "../hooks/useLoading";
 import Popup, { PopupType } from "../components/ui/Popup";
 import { LobbiesController } from "../api";
+import useUser from "../hooks/useUser";
 
 type TLobbyPageParams = {
   id: string;
@@ -26,11 +27,15 @@ const LobbyPage = () => {
   const [backWarningModal, openBackWarningModal, closeBackWarningModal] = useToggle();
   const [startWarningModal, openStartWarningModal, closeStartWarningModal] = useToggle();
   const [inviteModal, openInviteModal, closeInviteModal] = useToggle();
+  const navigate = useNavigate();
+  const { id: clientId } = useUser();
 
   // Handle loading and error
   if (isLoading) return <PageLoader />;
   if (error instanceof AxiosError && error.response?.status === 404)
     return <Navigate to={publicRoutes.notFoundPage} />;
+
+  const isAuthor = lobby.authorId === clientId;
 
   return (
     <>
@@ -66,16 +71,18 @@ const LobbyPage = () => {
                 : null}
             </ul>
           </section>
-          <div className="center-row gap-6">
-            <Button onClick={() => openInviteModal()}> Invite a player </Button>
-            <Button onClick={() => openStartWarningModal()}> Start </Button>
-          </div>
+          {isAuthor ? (
+            <div className="center-row gap-6">
+              <Button onClick={() => openInviteModal()}> Invite a player </Button>
+              <Button onClick={() => openStartWarningModal()}> Start </Button>
+            </div>
+          ) : null}
         </Box>
       </div>
       <WarningModal
         visible={backWarningModal}
         onConfirm={() => {
-          // TODO: Leave lobby
+          navigate(privateRoutes.lobbiesRoutes.create);
         }}
         onClose={() => closeBackWarningModal()}
       >
