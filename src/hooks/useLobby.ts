@@ -29,12 +29,16 @@ const useLobby = (id: string): TUseLobbyResponse => {
         .then((wsToken) => {
           localStorage.setItem("wsToken", wsToken);
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          // TODO: handle error
+          console.error(error);
+        });
     });
 
     return () => {
       setLobby(lobbyCleaner());
       LobbiesController.leave(id);
+      localStorage.removeItem("wsToken");
     };
   }, [id]);
 
