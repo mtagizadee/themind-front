@@ -7,6 +7,7 @@ import CreateLobbyPage from "../pages/CreateLobbyPage";
 import UserProvider from "../contexts/UserProvider";
 import BasicLayout from "../components/layout/BasicLayout";
 import LobbyPage from "../pages/LobbyPage";
+import NotFoundPage from "../pages/NotFoundPage";
 
 const App = () => {
   return (
@@ -14,6 +15,9 @@ const App = () => {
       <BasicLayout>
         <Routes>
           <Route path={publicRoutes.addUserPage} element={<AddUserPage />} />
+          <Route path="*" element={<Navigate to={publicRoutes.notFoundPage} />} />
+          <Route path={publicRoutes.notFoundPage} element={<NotFoundPage />} />
+
           <Route element={<PrivateRoutes />}>
             <Route element={<UserLayout />}>
               <Route path={privateRoutes.lobbiesRoutes.index}>

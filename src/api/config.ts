@@ -37,6 +37,7 @@ privateApi.interceptors.response.use(
       localStorage.removeItem("authToken");
       window.location.href = publicRoutes.addUserPage;
     }
+
     return Promise.reject(error);
   }
 );
