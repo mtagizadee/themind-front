@@ -36,7 +36,7 @@ export class LobbiesController {
   }
 
   /**
-   * Send request to leave the lobby
+   * Sends request to leave the lobby
    * @param id - id of the lobby that we want to leave
    * @returns message that user successfully left the lobby
    */
@@ -44,5 +44,16 @@ export class LobbiesController {
     const url = `/lobbies/${id}/leave`;
     const response = await privateApi.patch(url);
     return response.data;
+  }
+
+  /**
+   * Sends request to generate invitation link for the lobby
+   * @param id - id of the lobby that we want to generate invitation link for
+   * @returns generated link
+   */
+  static async generateInvitationLink(id: string) {
+    const url = `/lobbies/${id}/invitation-link`;
+    const response = await privateApi.post(url);
+    return response.data.link;
   }
 }
