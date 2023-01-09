@@ -16,7 +16,7 @@ const Menu = () => {
 
   return (
     <>
-      <Box className="fixed left-3 top-3 center-col p-0">
+      <Box className="fixed left-3 top-3 center-row md:center-col  p-0">
         <ThemeSwitch />
         {auth ? <LogOut openModal={() => openWarningModal()} /> : null}
       </Box>

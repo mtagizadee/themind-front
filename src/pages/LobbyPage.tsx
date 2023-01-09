@@ -34,7 +34,7 @@ const LobbyPage = () => {
 
   return (
     <>
-      <div className="center-content">
+      <div className="center-content full-screen">
         <Box className="box-700 relative">
           <FiX
             className="cursor-pointer absolute right-6 top-6 w-6 h-6"
