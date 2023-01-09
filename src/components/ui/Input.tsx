@@ -8,6 +8,7 @@ interface IInputProps {
   placeholder?: string;
   label?: string;
   className?: string;
+  value?: any;
   /**
    * If true, error styles will be applied to the input
    * and error message will be displayed
@@ -32,6 +33,7 @@ const Input: FC<IInputProps> = ({
   className,
   error = false,
   errorMessage,
+  value,
 }) => {
   return (
     <div className={className}>
@@ -48,6 +50,7 @@ const Input: FC<IInputProps> = ({
         placeholder={placeholder}
         id={id || name}
         name={name}
+        value={value}
       />
       {error ? (
         <p className="mt-2 text-sm text-red-600 dark:text-red-500 center-row gap-1">

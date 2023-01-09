@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Box from "../components/ui/Box";
 import useLobby from "../hooks/useLobby";
@@ -7,10 +7,14 @@ import { AxiosError } from "axios";
 import { publicRoutes } from "../common/routes";
 import { isNotEmpty } from "../validators";
 import { Light, Mikasa, Power, Purple } from "../assets/players";
-import { FiX } from "react-icons/fi";
+import { FiX, FiCopy } from "react-icons/fi";
 import WarningModal from "../components/ui/WarningModal";
 import useToggle from "../hooks/useToggle";
 import Button from "../components/ui/Button";
+import DefaultModal from "../components/ui/DefaultModal";
+import useLoading from "../hooks/useLoading";
+import Popup, { PopupType } from "../components/ui/Popup";
+import { LobbiesController } from "../api";
 
 type TLobbyPageParams = {
   id: string;
@@ -21,6 +25,7 @@ const LobbyPage = () => {
   const { lobby, isLoading, error } = useLobby(id as any);
   const [backWarningModal, openBackWarningModal, closeBackWarningModal] = useToggle();
   const [startWarningModal, openStartWarningModal, closeStartWarningModal] = useToggle();
+  const [inviteModal, openInviteModal, closeInviteModal] = useToggle();
 
   // Handle loading and error
   if (isLoading) return <PageLoader />;
@@ -62,7 +67,7 @@ const LobbyPage = () => {
             </ul>
           </section>
           <div className="center-row gap-6">
-            <Button> Invite a player </Button>
+            <Button onClick={() => openInviteModal()}> Invite a player </Button>
             <Button onClick={() => openStartWarningModal()}> Start </Button>
           </div>
         </Box>
@@ -86,6 +91,74 @@ const LobbyPage = () => {
         Are you sure you want to start the game? You will not be able to invite anyone else after
         the game starts.
       </WarningModal>
+      <InvitePlayerModal visible={inviteModal} onClose={() => closeInviteModal()} />
+    </>
+  );
+};
+
+interface IInvitePlayerModalProps {
+  visible: boolean;
+  onClose: () => void;
+}
+
+/**
+ * Component for generating an invitation link for a lobby
+ * @param IInvitePlayerModalProps
+ * @returns JSX.Element
+ */
+const InvitePlayerModal: FC<IInvitePlayerModalProps> = ({ visible, onClose }) => {
+  const [popup, setPopup] = useState(false);
+  const [link, setLink] = useState("");
+  const [coppied, setCoppied] = useState(false);
+  const { id } = useParams<TLobbyPageParams>();
+  const { execute, isLoading } = useLoading(
+    async () => {
+      if (id) {
+        const link = await LobbiesController.generateInvitationLink(id);
+        setLink(link);
+      }
+    },
+    () => {
+      setPopup(true);
+    }
+  );
+
+  return (
+    <>
+      <DefaultModal title="Invite a player" visible={visible} onClose={onClose}>
+        <Box className="center-row text-xm justify-between">
+          <p>
+            {isLoading
+              ? "Loading..."
+              : isNotEmpty(link)
+              ? coppied
+                ? "Link coppied to the clipboard..."
+                : "Link is ready, click the icon to copy it..."
+              : "Generate a link..."}
+          </p>
+          <FiCopy
+            onClick={() => {
+              // save link to the clipboard
+              navigator.clipboard.writeText(link);
+              setCoppied(true);
+            }}
+            className="cursor-pointer w-6 h-6"
+          />
+        </Box>
+        <Button
+          onClick={async () => {
+            await execute();
+          }}
+        >
+          Generate an invitation link
+        </Button>
+      </DefaultModal>
+      <Popup
+        onClose={() => setPopup(false)}
+        visible={popup}
+        type={PopupType.Error}
+        message="Could not generate an invitation link, please try again later on..."
+      />
     </>
   );
 };
