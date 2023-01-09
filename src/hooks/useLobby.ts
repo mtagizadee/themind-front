@@ -5,8 +5,8 @@ import useFetch from "./useFetch";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
-  lobbyLoading: boolean;
-  lobbyError: any;
+  isLoading: boolean;
+  error: any;
 };
 
 /**
@@ -17,7 +17,7 @@ type TUseLobbyResponse = {
  */
 const useLobby = (id: string): TUseLobbyResponse => {
   const [lobby, setLobby] = useState<TLobby>(lobbyCleaner());
-  const [fetchLobby, lobbyLoading, lobbyError] = useFetch(async () => {
+  const [fetchLobby, isLoading, error] = useFetch(async () => {
     const lobby = await LobbiesController.getOne(id);
     setLobby(lobby);
   });
@@ -30,7 +30,7 @@ const useLobby = (id: string): TUseLobbyResponse => {
     };
   }, [id]);
 
-  return { lobby, lobbyLoading, lobbyError };
+  return { lobby, isLoading, error };
 };
 
 export default useLobby;

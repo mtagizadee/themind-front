@@ -9,7 +9,7 @@ type TLobbyPageParams = {
 
 const LobbyPage = () => {
   const { id } = useParams<TLobbyPageParams>();
-  const {} = useLobby(id);
+  const { lobby, isLoading, error } = useLobby(id as any);
 
   return (
     <div className="center-content">
