@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, Outlet, Navigate, To } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Outlet, Navigate } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "../common/routes";
 import useAuth from "../hooks/useAuth";
 import AddUserPage from "../pages/AddUserPage";
@@ -32,10 +32,7 @@ const App = () => {
             </Route>
           </Route>
 
-          <Route element={<InviteRoute />}>
-            <Route path={publicRoutes.invite()} element={<InvitationPage />} />
-          </Route>
-
+          <Route path={publicRoutes.invite()} element={<InvitationPage />} />
           <Route path="*" element={<Navigate to={publicRoutes.notFoundPage} />} />
           <Route path={publicRoutes.notFoundPage} element={<NotFoundPage />} />
         </Routes>
@@ -62,17 +59,6 @@ const PublicRoutes = () => {
   const { auth } = useAuth();
 
   return auth ? <Navigate to={privateRoutes.lobbiesRoutes.create} /> : <Outlet />;
-};
-
-/**
- * InviteRoute is a route which checks if the user is authorized to join the lobby
- * and redirects to the add user page if not the back to the lobby
- * @returns JSX.Element
- */
-const InviteRoute = () => {
-  const { auth } = useAuth();
-
-  return auth ? <Outlet /> : <AddUserPage navigateTo={-1 as unknown as To} />;
 };
 
 /**

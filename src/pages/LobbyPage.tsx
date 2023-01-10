@@ -60,14 +60,13 @@ const LobbyPage = () => {
             <ul>
               {isNotEmpty(lobby.players)
                 ? lobby.players.map((player, index) => (
-                    // eslint-disable-line
-                    <InvitedPlayer // eslint-disable-line
-                      order={index + 1} // eslint-disable-line
-                      isAdmin={player.id === lobby.authorId} // eslint-disable-line
-                      key={player.id} // eslint-disable-line
-                      nickname={player.nickname} // eslint-disable-line
-                    /> // eslint-disable-line
-                  )) // eslint-disable-line
+                    <InvitedPlayer
+                      order={index + 1}
+                      isAdmin={player.id === lobby.authorId}
+                      key={player.id}
+                      nickname={player.nickname}
+                    />
+                  ))
                 : null}
             </ul>
           </section>
@@ -146,8 +145,10 @@ const InvitePlayerModal: FC<IInvitePlayerModalProps> = ({ visible, onClose }) =>
           <FiCopy
             onClick={() => {
               // save link to the clipboard
-              navigator.clipboard.writeText(link);
-              setCoppied(true);
+              if (isNotEmpty(link)) {
+                navigator.clipboard.writeText(link);
+                setCoppied(true);
+              }
             }}
             className="cursor-pointer w-6 h-6"
           />

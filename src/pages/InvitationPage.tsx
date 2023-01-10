@@ -1,6 +1,8 @@
 import React from "react";
 import { Navigate, useParams } from "react-router";
-import { privateRoutes } from "../common/routes";
+import { privateRoutes, publicRoutes } from "../common/routes";
+import useAuth from "../hooks/useAuth";
+import AddUserPage from "./AddUserPage";
 
 type TInvitationPageParams = {
   id: string;
@@ -8,8 +10,13 @@ type TInvitationPageParams = {
 
 const InvitationPage = () => {
   const { id } = useParams<TInvitationPageParams>();
+  const { auth } = useAuth();
 
-  return <Navigate to={privateRoutes.lobbiesRoutes.lobby(id)} />;
+  return auth ? (
+    <Navigate to={privateRoutes.lobbiesRoutes.lobby(id)} />
+  ) : (
+    <AddUserPage navigateTo={publicRoutes.invite(id)} />
+  );
 };
 
 export default InvitationPage;
