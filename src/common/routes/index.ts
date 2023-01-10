@@ -13,4 +13,7 @@ export const privateRoutes = {
 export const publicRoutes = {
   addUserPage: "/",
   notFoundPage: "/error",
+  invite(id = ":id") {
+    return `/invite/${id}`;
+  },
 };

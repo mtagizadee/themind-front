@@ -1,17 +1,23 @@
-import React, { FormEvent, useState } from "react";
+import React, { FC, FormEvent, useState } from "react";
 import { ErrorKey, TValidationError, VALIDATION_ERROR_INITIAL_STATE } from "../common/types";
 import Box from "../components/ui/Box";
 import Input from "../components/ui/Input";
 import { lengthRange, isNotEmpty, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH } from "../validators";
 import { AuthController } from "../api";
-import { useNavigate } from "react-router-dom";
+import { To, useNavigate } from "react-router-dom";
 import Popup, { PopupType } from "../components/ui/Popup";
 import Button from "../components/ui/Button";
 import useLoading from "../hooks/useLoading";
 import useAuth from "../hooks/useAuth";
 import { privateRoutes } from "../common/routes";
 
-const AddUserPage = () => {
+interface IAddUserPageProps {
+  navigateTo?: To;
+}
+
+const AddUserPage: FC<IAddUserPageProps> = ({
+  navigateTo = privateRoutes.lobbiesRoutes.create,
+}) => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
   const { authorize } = useAuth();
   const navigate = useNavigate();
@@ -24,7 +30,7 @@ const AddUserPage = () => {
       localStorage.setItem("authToken", authToken);
       authorize();
 
-      navigate(privateRoutes.lobbiesRoutes.create);
+      navigate(navigateTo);
     },
     () => {
       setPopup(true);
