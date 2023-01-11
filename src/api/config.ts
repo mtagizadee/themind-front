@@ -36,8 +36,10 @@ privateApi.interceptors.response.use(
     if (error.response.status === 401) {
       localStorage.removeItem("authToken");
       window.location.href = publicRoutes.addUserPage;
+
+      return Promise.reject(error);
     }
 
-    return Promise.reject(error);
+    throw error;
   }
 );

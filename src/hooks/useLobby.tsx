@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { LobbiesController } from "../api";
 import { lobbyCleaner, TLobby } from "../common/types";
 import useFetch from "./useFetch";
-import socket from "../common/socket";
+import useSocket from "./useSocket";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
@@ -17,6 +17,7 @@ type TUseLobbyResponse = {
  * @returns TUseLobbyResponse - lobby object and isLoading flag
  */
 const useLobby = (id: string): TUseLobbyResponse => {
+  const { connect, disconnect } = useSocket();
   const [lobby, setLobby] = useState<TLobby>(lobbyCleaner());
   const [fetchLobby, isLoading, error] = useFetch(async () => {
     const lobby = await LobbiesController.getOne(id);
@@ -24,7 +25,8 @@ const useLobby = (id: string): TUseLobbyResponse => {
   });
 
   useEffect(() => {
-    socket.connection.connect();
+    connect();
+
     // if you was able to join the lobby, fetch it
     fetchLobby().then(() => {
       LobbiesController.join(id)
@@ -37,10 +39,10 @@ const useLobby = (id: string): TUseLobbyResponse => {
     });
 
     return () => {
+      disconnect();
       setLobby(lobbyCleaner());
       LobbiesController.leave(id);
       localStorage.removeItem("wsToken");
-      socket.connection.disconnect();
     };
   }, [id]);
 
