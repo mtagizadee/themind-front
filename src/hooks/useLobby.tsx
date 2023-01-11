@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { LobbiesController } from "../api";
 import { lobbyCleaner, TLobby } from "../common/types";
 import useFetch from "./useFetch";
+import socket from "../common/socket";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
@@ -23,6 +24,7 @@ const useLobby = (id: string): TUseLobbyResponse => {
   });
 
   useEffect(() => {
+    socket.connection.connect();
     // if you was able to join the lobby, fetch it
     fetchLobby().then(() => {
       LobbiesController.join(id)
@@ -38,6 +40,7 @@ const useLobby = (id: string): TUseLobbyResponse => {
       setLobby(lobbyCleaner());
       LobbiesController.leave(id);
       localStorage.removeItem("wsToken");
+      socket.connection.disconnect();
     };
   }, [id]);
 

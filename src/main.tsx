@@ -1,11 +1,26 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app/App";
 import "./css/index.css";
 import AuthProvider from "./contexts/AuthProvider";
+import SocketProvider from "./contexts/SocketProvider";
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <AuthProvider>
+const root = document.getElementById("root") as HTMLElement;
+
+ReactDOM.createRoot(root).render(
+  <Provider>
     <App />
-  </AuthProvider>
+  </Provider>
 );
+
+interface IProviderProps {
+  children: ReactNode;
+}
+
+function Provider({ children }: IProviderProps) {
+  return (
+    <AuthProvider>
+      <SocketProvider> {children} </SocketProvider>
+    </AuthProvider>
+  );
+}

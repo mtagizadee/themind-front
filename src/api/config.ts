@@ -1,16 +1,16 @@
 import axios, { AxiosHeaders } from "axios";
 import { publicRoutes } from "../common/routes";
 
-const BASE_URL = (import.meta as any).env.VITE_APP_BASE_URL as string;
+const REST_URL = (import.meta as any).env.VITE_APP_REST_URL;
 
 // instance of axios for requests that do not require authentication
 export const publicApi = axios.create({
-  baseURL: BASE_URL,
+  baseURL: REST_URL,
 });
 
 // instance of axios for requests that require authentication
 export const privateApi = axios.create({
-  baseURL: BASE_URL,
+  baseURL: REST_URL,
 });
 
 type TAuthHedaers = AxiosHeaders & { Authorization: string };
