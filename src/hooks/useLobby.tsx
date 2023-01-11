@@ -3,6 +3,7 @@ import { LobbiesController } from "../api";
 import { lobbyCleaner, TLobby } from "../common/types";
 import useFetch from "./useFetch";
 import useSocket from "./useSocket";
+import useUser from "./useUser";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
@@ -17,7 +18,8 @@ type TUseLobbyResponse = {
  * @returns TUseLobbyResponse - lobby object and isLoading flag
  */
 const useLobby = (id: string): TUseLobbyResponse => {
-  const { connect, disconnect } = useSocket();
+  const { connect, disconnect, socket } = useSocket();
+  const user = useUser();
   const [lobby, setLobby] = useState<TLobby>(lobbyCleaner());
   const [fetchLobby, isLoading, error] = useFetch(async () => {
     const lobby = await LobbiesController.getOne(id);
@@ -26,6 +28,8 @@ const useLobby = (id: string): TUseLobbyResponse => {
 
   useEffect(() => {
     connect();
+
+    socket.connection.emit("join", user);
 
     // if you was able to join the lobby, fetch it
     fetchLobby().then(() => {

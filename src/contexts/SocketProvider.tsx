@@ -41,7 +41,7 @@ const SocketProvider: FC<ISocketProviderProps> = ({ children }) => {
   // Notify everything that happens with socket connection
   useEffect(() => {
     socket.connection.on("connect_error", (error) => {
-      console.log(`The following connection error occured: ${error.message}`);
+      console.log(`The following connection error occured: ${error}`);
     });
 
     socket.connection.on("connect", () => {
