@@ -18,7 +18,7 @@ type TSocketContext = {
   disconnect: () => void;
 };
 
-const SocketContext = createContext<TSocketContext>({} as any);
+export const SocketContext = createContext<TSocketContext>({} as any);
 
 interface ISocketProviderProps {
   children: ReactNode;
