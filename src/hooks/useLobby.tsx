@@ -3,6 +3,8 @@ import { LobbiesController } from "../api";
 import { lobbyCleaner, TLobby, TPlayer } from "../common/types";
 import useSocket from "./useSocket";
 import useUser from "./useUser";
+import useEvent from "./useEvent";
+import useFetch from "./useFetch";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
@@ -25,6 +27,24 @@ const useLobby = (id: string): TUseLobbyResponse => {
     setLobby(lobby);
   });
 
+  useEvent("lobby:join", (user: TPlayer) => {
+    setLobby((lobby) => {
+      return {
+        ...lobby,
+        players: [...lobby.players, user],
+      };
+    });
+  });
+
+  useEvent("lobby:leave", (userId: string) => {
+    setLobby((lobby) => {
+      return {
+        ...lobby,
+        players: lobby.players.filter((player) => player.id !== userId),
+      };
+    });
+  });
+
   useEffect(() => {
     connect();
 
@@ -40,24 +60,6 @@ const useLobby = (id: string): TUseLobbyResponse => {
       }
     );
 
-    socket.connection.on("lobby:join", (user: TPlayer) => {
-      setLobby((lobby) => {
-        return {
-          ...lobby,
-          players: [...lobby.players, user],
-        };
-      });
-    });
-
-    socket.connection.on("lobby:leave", (userId: string) => {
-      setLobby((lobby) => {
-        return {
-          ...lobby,
-          players: lobby.players.filter((player) => player.id !== userId),
-        };
-      });
-    });
-
     return () => {
       socket.connection.emit("lobby:leave", {
         userId: user.id,
@@ -65,7 +67,6 @@ const useLobby = (id: string): TUseLobbyResponse => {
       });
 
       localStorage.removeItem("wsToken");
-      socket.connection.removeAllListeners();
       disconnect();
     };
   }, [id]);

@@ -1,8 +1,9 @@
 import { Socket } from "socket.io-client";
+import { TPlayer } from "./player";
 
 export interface ServerToClientEvents {
-  "lobby:join": (data: any) => void;
-  "lobby:leave": (data: any) => void;
+  "lobby:join": (player: TPlayer) => void;
+  "lobby:leave": (userId: string) => void;
 }
 
 export interface ClientToServerEvents {

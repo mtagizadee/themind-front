@@ -11,6 +11,10 @@ const useEvent = (
 
   useEffect(() => {
     socket.connection.on(event, handler);
+
+    return () => {
+      socket.connection.removeListener(event, handler);
+    };
   }, dependencies);
 
   return {};
