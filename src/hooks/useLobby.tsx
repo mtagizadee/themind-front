@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { LobbiesController } from "../api";
 import { lobbyCleaner, TLobby, TPlayer } from "../common/types";
-import { isNotEmpty } from "../validators";
-import useFetch from "./useFetch";
 import useSocket from "./useSocket";
 import useUser from "./useUser";
 
@@ -31,7 +29,7 @@ const useLobby = (id: string): TUseLobbyResponse => {
     connect();
 
     socket.connection.emit(
-      "join",
+      "lobby:join",
       {
         lobbyId: id,
         userId: user.id,
@@ -42,7 +40,7 @@ const useLobby = (id: string): TUseLobbyResponse => {
       }
     );
 
-    socket.connection.on("join", (user: TPlayer) => {
+    socket.connection.on("lobby:join", (user: TPlayer) => {
       setLobby((lobby) => {
         return {
           ...lobby,
@@ -51,7 +49,7 @@ const useLobby = (id: string): TUseLobbyResponse => {
       });
     });
 
-    socket.connection.on("leave", (userId: string) => {
+    socket.connection.on("lobby:leave", (userId: string) => {
       setLobby((lobby) => {
         return {
           ...lobby,
@@ -61,7 +59,7 @@ const useLobby = (id: string): TUseLobbyResponse => {
     });
 
     return () => {
-      socket.connection.emit("leave", {
+      socket.connection.emit("lobby:leave", {
         userId: user.id,
         lobbyId: id,
       });
