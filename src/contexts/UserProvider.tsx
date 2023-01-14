@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import Popup, { PopupType } from "../components/ui/Popup";
 import useLoading from "../hooks/useLoading";
 import PageLoader from "../components/PageLoader";
+import useSocket from "../hooks/useSocket";
 
 export type TUserContext = {
   id: string;
@@ -23,11 +24,13 @@ interface IUserProviderProps {
  */
 const UserProvider: FC<IUserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<TUserContext>({} as any);
+  const { socket } = useSocket();
   const [popup, setPopup] = useState(false);
   const { unauthorize } = useAuth();
   const { execute, isLoading } = useLoading(
     async () => {
       const user = await AuthController.me();
+      socket.token = localStorage.getItem("authToken") || "";
       setUser(user);
       setPopup(true);
     },

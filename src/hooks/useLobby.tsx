@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { LobbiesController } from "../api";
-import { lobbyCleaner, TLobby, TPlayer } from "../common/types";
+import { lobbyCleaner, TLobby, TPlayer, TWsExcention } from "../common/types";
 import useSocket from "./useSocket";
 import useUser from "./useUser";
 import useEvent from "./useEvent";
@@ -27,14 +27,19 @@ const useLobby = (id: string): TUseLobbyResponse => {
     setLobby(lobby);
   });
 
-  useEvent("lobby:join", (user: TPlayer) => {
-    setLobby((lobby) => {
-      return {
-        ...lobby,
-        players: [...lobby.players, user],
-      };
-    });
-  });
+  useEvent(
+    "lobby:join",
+    (user: TPlayer) => {
+      if (Object.keys(user).length === 0) return;
+      setLobby((lobby) => {
+        return {
+          ...lobby,
+          players: [...lobby.players, user],
+        };
+      });
+    },
+    [user]
+  );
 
   useEvent("lobby:leave", (userId: string) => {
     setLobby((lobby) => {
@@ -43,6 +48,10 @@ const useLobby = (id: string): TUseLobbyResponse => {
         players: lobby.players.filter((player) => player.id !== userId),
       };
     });
+  });
+
+  useEvent("exception", (error: TWsExcention) => {
+    console.log(error);
   });
 
   useEffect(() => {

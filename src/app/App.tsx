@@ -28,9 +28,7 @@ const App = () => {
                   path={privateRoutes.lobbiesRoutes.create}
                   element={<CreateLobbyPage />}
                 />
-                <Route element={<SocketLayout />}>
-                  <Route path={privateRoutes.lobbiesRoutes.lobby()} element={<LobbyPage />} />
-                </Route>
+                <Route path={privateRoutes.lobbiesRoutes.lobby()} element={<LobbyPage />} />
               </Route>
             </Route>
           </Route>
@@ -73,19 +71,6 @@ const UserLayout = () => {
     <UserProvider>
       <Outlet />
     </UserProvider>
-  );
-};
-
-/**
- * SocketLayout is a layout which wraps the outlet in the SocketProvider to provide the socket handling
- * in the route
- * @returns JSX.Element which is the outlet wrapped in the SocketProvider
- */
-const SocketLayout = () => {
-  return (
-    <SocketProvider>
-      <Outlet />
-    </SocketProvider>
   );
 };
 
