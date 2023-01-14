@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { LobbiesController } from "../api";
-import { lobbyCleaner, TLobby } from "../common/types";
+import { lobbyCleaner, TLobby, TPlayer } from "../common/types";
+import { isNotEmpty } from "../validators";
 import useFetch from "./useFetch";
 import useSocket from "./useSocket";
 import useUser from "./useUser";
@@ -29,24 +30,45 @@ const useLobby = (id: string): TUseLobbyResponse => {
   useEffect(() => {
     connect();
 
-    socket.connection.emit("join", user);
+    socket.connection.emit(
+      "join",
+      {
+        lobbyId: id,
+        userId: user.id,
+        nickname: user.nickname,
+      },
+      (response: any) => {
+        setLobby(response.lobby);
+      }
+    );
 
-    // if you was able to join the lobby, fetch it
-    fetchLobby().then(() => {
-      LobbiesController.join(id)
-        .then((wsToken) => {
-          localStorage.setItem("wsToken", wsToken);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    socket.connection.on("join", (user: TPlayer) => {
+      setLobby((lobby) => {
+        return {
+          ...lobby,
+          players: [...lobby.players, user],
+        };
+      });
+    });
+
+    socket.connection.on("leave", (userId: string) => {
+      setLobby((lobby) => {
+        return {
+          ...lobby,
+          players: lobby.players.filter((player) => player.id !== userId),
+        };
+      });
     });
 
     return () => {
-      disconnect();
-      setLobby(lobbyCleaner());
-      LobbiesController.leave(id);
+      socket.connection.emit("leave", {
+        userId: user.id,
+        lobbyId: id,
+      });
+
       localStorage.removeItem("wsToken");
+      socket.connection.removeAllListeners();
+      disconnect();
     };
   }, [id]);
 

@@ -2,6 +2,8 @@ import React, { createContext, ReactNode, useState, FC, useEffect } from "react"
 import { AuthController } from "../api";
 import useAuth from "../hooks/useAuth";
 import Popup, { PopupType } from "../components/ui/Popup";
+import useLoading from "../hooks/useLoading";
+import PageLoader from "../components/PageLoader";
 
 export type TUserContext = {
   id: string;
@@ -23,27 +25,32 @@ const UserProvider: FC<IUserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<TUserContext>({} as any);
   const [popup, setPopup] = useState(false);
   const { unauthorize } = useAuth();
+  const { execute, isLoading } = useLoading(
+    async () => {
+      const user = await AuthController.me();
+      setUser(user);
+      setPopup(true);
+    },
+    () => {
+      // if the user is not authorized, logout the user
+      localStorage.removeItem("authToken");
+      unauthorize();
+    }
+  );
 
   const clear = () => {
     setUser({} as any);
   };
 
   useEffect(() => {
-    AuthController.me()
-      .then((user) => {
-        setUser(user);
-        setPopup(true);
-      })
-      .catch(() => {
-        // if the user is not authorized, logout the user
-        localStorage.removeItem("authToken");
-        unauthorize();
-      });
+    execute();
 
     return () => {
       clear();
     };
   }, []);
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <>

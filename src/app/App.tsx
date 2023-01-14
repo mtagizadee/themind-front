@@ -9,6 +9,7 @@ import BasicLayout from "../components/layout/BasicLayout";
 import LobbyPage from "../pages/LobbyPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import InvitationPage from "../pages/InvitationPage";
+import SocketProvider from "../contexts/SocketProvider";
 
 const App = () => {
   return (
@@ -27,7 +28,9 @@ const App = () => {
                   path={privateRoutes.lobbiesRoutes.create}
                   element={<CreateLobbyPage />}
                 />
-                <Route path={privateRoutes.lobbiesRoutes.lobby()} element={<LobbyPage />} />
+                <Route element={<SocketLayout />}>
+                  <Route path={privateRoutes.lobbiesRoutes.lobby()} element={<LobbyPage />} />
+                </Route>
               </Route>
             </Route>
           </Route>
@@ -70,6 +73,19 @@ const UserLayout = () => {
     <UserProvider>
       <Outlet />
     </UserProvider>
+  );
+};
+
+/**
+ * SocketLayout is a layout which wraps the outlet in the SocketProvider to provide the socket handling
+ * in the route
+ * @returns JSX.Element which is the outlet wrapped in the SocketProvider
+ */
+const SocketLayout = () => {
+  return (
+    <SocketProvider>
+      <Outlet />
+    </SocketProvider>
   );
 };
 
