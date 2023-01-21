@@ -9,7 +9,6 @@ import BasicLayout from "../components/layout/BasicLayout";
 import LobbyPage from "../pages/LobbyPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import InvitationPage from "../pages/InvitationPage";
-import SocketProvider from "../contexts/SocketProvider";
 
 const App = () => {
   return (

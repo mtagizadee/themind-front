@@ -31,11 +31,11 @@ interface ISocketProviderProps {
  */
 const SocketProvider: FC<ISocketProviderProps> = ({ children }) => {
   const connect = () => {
-    socket.connection.connect();
+    socket.connect();
   };
 
   const disconnect = () => {
-    socket.connection.disconnect();
+    socket.disconect();
   };
 
   // Notify everything that happens with socket connection

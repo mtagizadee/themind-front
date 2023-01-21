@@ -1,4 +1,5 @@
 import { Socket } from "socket.io-client";
+import { TLobby } from "./lobby";
 import { TPlayer } from "./player";
 
 export type TWsExcention = {
@@ -13,8 +14,8 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  "lobby:join": (data: any, handler: (response: any) => void) => void;
-  "lobby:leave": (data: any) => void;
+  "lobby:join": (data: { lobbyId: string }, handler: (response: TLobby) => void) => void;
+  "lobby:leave": (data: { lobbyId: string }) => string;
 }
 
 export type ISocket = Socket<ServerToClientEvents, ClientToServerEvents>;

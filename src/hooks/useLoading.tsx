@@ -8,7 +8,7 @@ type TReturn = { execute: (...args: any) => Promise<void>; isLoading: boolean };
  * @param onError - function to be executed when an error occurs
  * @returns TReturn - { execute: (...args: any) => Promise<void>; isLoading: boolean }
  */
-const useLoading = (callback: (...args: any) => Promise<void>, onError: (error: any) => void) => {
+const useLoading = (callback: (...args: any) => Promise<void>, onError?: (error: any) => void) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const execute = async (...args: any) => {
@@ -16,7 +16,9 @@ const useLoading = (callback: (...args: any) => Promise<void>, onError: (error: 
       setIsLoading(true);
       await callback(...args);
     } catch (error) {
-      onError(error);
+      if (onError) {
+        onError(error);
+      }
     } finally {
       setIsLoading(false);
     }

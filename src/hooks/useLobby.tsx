@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
-import { LobbiesController } from "../api";
 import { lobbyCleaner, TLobby, TPlayer, TWsExcention } from "../common/types";
 import useSocket from "./useSocket";
-import useUser from "./useUser";
 import useEvent from "./useEvent";
-import useFetch from "./useFetch";
+import useLoading from "./useLoading";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
   isLoading: boolean;
-  error: any;
 };
 
 /**
@@ -20,26 +17,21 @@ type TUseLobbyResponse = {
  */
 const useLobby = (id: string): TUseLobbyResponse => {
   const { connect, disconnect, socket } = useSocket();
-  const user = useUser();
   const [lobby, setLobby] = useState<TLobby>(lobbyCleaner());
-  const [fetchLobby, isLoading, error] = useFetch(async () => {
-    const lobby = await LobbiesController.getOne(id);
-    setLobby(lobby);
+  const { execute: joinLobby, isLoading } = useLoading(async () => {
+    socket.connection.emit("lobby:join", { lobbyId: id }, (lobby) => {
+      setLobby(lobby);
+    });
   });
 
-  useEvent(
-    "lobby:join",
-    (user: TPlayer) => {
-      if (Object.keys(user).length === 0) return;
-      setLobby((lobby) => {
-        return {
-          ...lobby,
-          players: [...lobby.players, user],
-        };
-      });
-    },
-    [user]
-  );
+  useEvent("lobby:join", (user: TPlayer) => {
+    setLobby((lobby) => {
+      return {
+        ...lobby,
+        players: [...lobby.players, user],
+      };
+    });
+  });
 
   useEvent("lobby:leave", (userId: string) => {
     setLobby((lobby) => {
@@ -56,31 +48,15 @@ const useLobby = (id: string): TUseLobbyResponse => {
 
   useEffect(() => {
     connect();
-
-    socket.connection.emit(
-      "lobby:join",
-      {
-        lobbyId: id,
-        userId: user.id,
-        nickname: user.nickname,
-      },
-      (response: any) => {
-        setLobby(response.lobby);
-      }
-    );
+    joinLobby();
 
     return () => {
-      socket.connection.emit("lobby:leave", {
-        userId: user.id,
-        lobbyId: id,
-      });
-
-      localStorage.removeItem("wsToken");
+      socket.connection.emit("lobby:leave", { lobbyId: id });
       disconnect();
     };
   }, [id]);
 
-  return { lobby, isLoading, error };
+  return { lobby, isLoading };
 };
 
 export default useLobby;
