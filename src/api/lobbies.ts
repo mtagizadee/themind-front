@@ -25,28 +25,6 @@ export class LobbiesController {
   }
 
   /**
-   * Sends request to join the lobby
-   * @param id - id of the lobby that we want to join
-   * @returns wsToken - token that will be used to connect to the lobby websocket
-   */
-  static async join(id: string) {
-    const url = `/lobbies/${id}/join`;
-    const response = await privateApi.patch(url);
-    return response.data.wsToken;
-  }
-
-  /**
-   * Sends request to leave the lobby
-   * @param id - id of the lobby that we want to leave
-   * @returns message that user successfully left the lobby
-   */
-  static async leave(id: string) {
-    const url = `/lobbies/${id}/leave`;
-    const response = await privateApi.patch(url);
-    return response.data;
-  }
-
-  /**
    * Sends request to generate invitation link for the lobby
    * @param id - id of the lobby that we want to generate invitation link for
    * @returns generated link
