@@ -11,9 +11,9 @@ type TUseLobbyResponse = {
 };
 
 /**
- * Hook that fetches lobby data from server at the beginning and then every time when lobby id changes
- * @param id  - lobby id that we want to fetch
- * @param onError - error handler function that will be called if something goes wrong
+ * Hook that handles lobby logic with socket events and emits
+ * @param id  - lobby id that we want to work with
+ * @param displayPopup - function that displays popup with message and type
  * @returns TUseLobbyResponse - lobby object and isLoading flag
  */
 const useLobby = (
@@ -23,7 +23,7 @@ const useLobby = (
   const [lobby, setLobby] = useState<TLobby>(lobbyCleaner());
   const navigate = useNavigate();
 
-  const joinLobby = useEmit("lobby:join", { lobbyId: id }, (response) => {
+  const joinLobby = useEmit("lobby:join", { lobbyId: id }, (response: TLobby) => {
     setLobby(response);
   });
 
@@ -50,10 +50,14 @@ const useLobby = (
       navigate(publicRoutes.notFoundPage);
     }
 
-    if (error.status === 403) {
+    if (error.status === 409) {
       displayPopup("You cannot join the Lobby, it is full!", PopupType.Error);
       navigate(privateRoutes.lobbiesRoutes.create);
     }
+  });
+
+  useEvent("lobby:start", (game: { id: string }) => {
+    navigate(privateRoutes.game(game.id));
   });
 
   useEffect(() => {

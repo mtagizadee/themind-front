@@ -8,6 +8,10 @@ export const privateRoutes = {
       return `${this.index}/${id}`;
     },
   },
+
+  game(id = ":id") {
+    return `/game/${id}`;
+  },
 };
 
 export const publicRoutes = {

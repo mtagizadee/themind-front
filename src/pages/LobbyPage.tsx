@@ -18,6 +18,7 @@ import useUser from "../hooks/useUser";
 import { fixResponseDate, objectsAreEqual } from "../common/helpers";
 import { lobbyCleaner } from "../common/types";
 import usePopup from "../hooks/usePopup";
+import useEmit from "../hooks/useEmit";
 
 type TLobbyPageParams = {
   id: string;
@@ -32,6 +33,8 @@ const LobbyPage = () => {
   const navigate = useNavigate();
   const { id: clientId } = useUser();
   const { lobby } = useLobby(id as any, displayPopup);
+
+  const startGame = useEmit("lobby:start", { lobbyId: id as any });
 
   if (objectsAreEqual(lobby, lobbyCleaner())) return <PageLoader />;
   const isAuthor = lobby.authorId === clientId;
@@ -89,7 +92,7 @@ const LobbyPage = () => {
       <WarningModal
         visible={startWarningModal}
         onConfirm={() => {
-          // TODO: Start the game
+          startGame();
         }}
         onClose={() => closeStartWarningModal()}
       >

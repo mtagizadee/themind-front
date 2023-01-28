@@ -11,7 +11,7 @@ import { ClientToServerEvents } from "../common/types";
 const useEmit = (
   event: keyof ClientToServerEvents,
   data: Parameters<ClientToServerEvents[keyof ClientToServerEvents]>[0],
-  handler: Parameters<ClientToServerEvents[keyof ClientToServerEvents]>[1]
+  handler?: Parameters<ClientToServerEvents[keyof ClientToServerEvents]>[1]
 ) => {
   const { socket } = useSocket();
 
