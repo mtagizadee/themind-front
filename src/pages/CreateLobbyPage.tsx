@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Popup, { PopupType } from "../components/ui/Popup";
+import { PopupType } from "../components/ui/Popup";
 import Box from "../components/ui/Box";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
@@ -9,10 +9,11 @@ import { isInteger, isNotEmpty, MAX_NUMBER_OF_PLAYERS, MIN_NUMBER_OF_PLAYERS } f
 import useLoading from "../hooks/useLoading";
 import { LobbiesController } from "../api";
 import { privateRoutes } from "../common/routes";
+import usePopup from "../hooks/usePopup";
 
 const CreateLobbyPage = () => {
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
-  const [popup, setPopup] = useState(false);
+  const { displayPopup } = usePopup();
   const navigate = useNavigate();
 
   const { execute, isLoading } = useLoading(
@@ -21,7 +22,7 @@ const CreateLobbyPage = () => {
       navigate(privateRoutes.lobbiesRoutes.lobby(lobbyId));
     },
     () => {
-      setPopup(true);
+      displayPopup("Could not create a lobby, please try again later on...", PopupType.Error);
     }
   );
 
@@ -54,34 +55,26 @@ const CreateLobbyPage = () => {
   };
 
   return (
-    <>
-      <div className="center-content full-screen">
-        <Box className="box-600">
-          <h1 className="text-center">Create Lobby</h1>
-          <form onSubmit={onSubmit}>
-            <Input
-              error={error.key !== ErrorKey.NE}
-              errorMessage={error.message}
-              className="my-4"
-              name="numberOfPlayers"
-              label="Enter the number of players in the lobby"
-              placeholder="2-4"
-              type="number"
-            />
+    <div className="center-content full-screen">
+      <Box className="box-600">
+        <h1 className="text-center">Create Lobby</h1>
+        <form onSubmit={onSubmit}>
+          <Input
+            error={error.key !== ErrorKey.NE}
+            errorMessage={error.message}
+            className="my-4"
+            name="numberOfPlayers"
+            label="Enter the number of players in the lobby"
+            placeholder="2-4"
+            type="number"
+          />
 
-            <Button type="submit" disabled={isLoading}>
-              Submit
-            </Button>
-          </form>
-        </Box>
-      </div>
-      <Popup
-        type={PopupType.Error}
-        message="Could not create a lobby, please try again later on..."
-        onClose={() => setPopup(false)}
-        visible={popup}
-      />
-    </>
+          <Button type="submit" disabled={isLoading}>
+            Submit
+          </Button>
+        </form>
+      </Box>
+    </div>
   );
 };
 

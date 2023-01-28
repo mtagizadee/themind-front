@@ -1,11 +1,11 @@
 import React, { createContext, ReactNode, useState, FC, useEffect } from "react";
 import { AuthController } from "../api";
 import useAuth from "../hooks/useAuth";
-import Popup, { PopupType } from "../components/ui/Popup";
+import usePopup from "../hooks/usePopup";
 import useLoading from "../hooks/useLoading";
 import PageLoader from "../components/PageLoader";
 import useSocket from "../hooks/useSocket";
-import useToggle from "../hooks/useToggle";
+import { PopupType } from "../components/ui/Popup";
 
 export type TUserContext = {
   id: string;
@@ -26,13 +26,13 @@ interface IUserProviderProps {
 const UserProvider: FC<IUserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<TUserContext>({} as any);
   const { connect, disconnect } = useSocket();
-  const [popup, showPopup, hidePopup] = useToggle();
+  const { displayPopup } = usePopup();
   const { unauthorize } = useAuth();
   const { execute, isLoading } = useLoading(
     async () => {
       const user = await AuthController.me();
       setUser(user);
-      showPopup();
+      displayPopup(`Greate to see, ${user.nickname}!`, PopupType.Success);
     },
     () => {
       // if the user is not authorized, logout the user
@@ -57,17 +57,7 @@ const UserProvider: FC<IUserProviderProps> = ({ children }) => {
 
   if (isLoading) return <PageLoader />;
 
-  return (
-    <>
-      <UserContext.Provider value={{ ...user }}>{children}</UserContext.Provider>
-      <Popup
-        type={PopupType.Success}
-        message={`Great to see you, ${user.nickname}!`}
-        visible={popup}
-        onClose={() => hidePopup}
-      />
-    </>
-  );
+  return <UserContext.Provider value={{ ...user }}>{children}</UserContext.Provider>;
 };
 
 export default UserProvider;

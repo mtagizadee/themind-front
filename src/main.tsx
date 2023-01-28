@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./app/App";
 import AuthProvider from "./contexts/AuthProvider";
 import SocketProvider from "./contexts/SocketProvider";
+import PopupProvider from "./contexts/PopupProvider";
 import "./css/index.css";
 
 const root = document.getElementById("root") as HTMLElement;
@@ -27,7 +28,9 @@ interface IProviderProps {
 function Provider({ children }: IProviderProps) {
   return (
     <AuthProvider>
-      <SocketProvider>{children}</SocketProvider>
+      <SocketProvider>
+        <PopupProvider>{children}</PopupProvider>
+      </SocketProvider>
     </AuthProvider>
   );
 }

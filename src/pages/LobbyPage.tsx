@@ -12,11 +12,12 @@ import useToggle from "../hooks/useToggle";
 import Button from "../components/ui/Button";
 import DefaultModal from "../components/ui/DefaultModal";
 import useLoading from "../hooks/useLoading";
-import Popup, { PopupType } from "../components/ui/Popup";
+import { PopupType } from "../components/ui/Popup";
 import { LobbiesController } from "../api";
 import useUser from "../hooks/useUser";
 import { fixResponseDate, objectsAreEqual } from "../common/helpers";
 import { lobbyCleaner } from "../common/types";
+import usePopup from "../hooks/usePopup";
 
 type TLobbyPageParams = {
   id: string;
@@ -27,9 +28,10 @@ const LobbyPage = () => {
   const [backWarningModal, openBackWarningModal, closeBackWarningModal] = useToggle();
   const [startWarningModal, openStartWarningModal, closeStartWarningModal] = useToggle();
   const [inviteModal, openInviteModal, closeInviteModal] = useToggle();
+  const { displayPopup } = usePopup();
   const navigate = useNavigate();
   const { id: clientId } = useUser();
-  const { lobby } = useLobby(id as any);
+  const { lobby } = useLobby(id as any, displayPopup);
 
   if (objectsAreEqual(lobby, lobbyCleaner())) return <PageLoader />;
   const isAuthor = lobby.authorId === clientId;
@@ -110,7 +112,7 @@ interface IInvitePlayerModalProps {
  * @returns JSX.Element
  */
 const InvitePlayerModal: FC<IInvitePlayerModalProps> = ({ visible, onClose }) => {
-  const [popup, setPopup] = useState(false);
+  const { displayPopup } = usePopup();
   const [link, setLink] = useState("");
   const [coppied, setCoppied] = useState(false);
   const { id } = useParams<TLobbyPageParams>();
@@ -122,49 +124,44 @@ const InvitePlayerModal: FC<IInvitePlayerModalProps> = ({ visible, onClose }) =>
       }
     },
     () => {
-      setPopup(true);
+      displayPopup(
+        "Could not generate an invitaion link, please try again later on...",
+        PopupType.Error
+      );
     }
   );
 
   return (
-    <>
-      <DefaultModal title="Invite a player" visible={visible} onClose={onClose}>
-        <Box className="center-row text-xm justify-between">
-          <p>
-            {isLoading
-              ? "Loading..."
-              : isNotEmpty(link)
-              ? coppied
-                ? "Link coppied to the clipboard..."
-                : "Link is ready, click the icon to copy it..."
-              : "Generate a link..."}
-          </p>
-          <FiCopy
-            onClick={() => {
-              // save link to the clipboard
-              if (isNotEmpty(link)) {
-                navigator.clipboard.writeText(link);
-                setCoppied(true);
-              }
-            }}
-            className="cursor-pointer w-6 h-6"
-          />
-        </Box>
-        <Button
-          onClick={async () => {
-            await execute();
+    <DefaultModal title="Invite a player" visible={visible} onClose={onClose}>
+      <Box className="center-row text-xm justify-between">
+        <p>
+          {isLoading
+            ? "Loading..."
+            : isNotEmpty(link)
+            ? coppied
+              ? "Link coppied to the clipboard..."
+              : "Link is ready, click the icon to copy it..."
+            : "Generate a link..."}
+        </p>
+        <FiCopy
+          onClick={() => {
+            // save link to the clipboard
+            if (isNotEmpty(link)) {
+              navigator.clipboard.writeText(link);
+              setCoppied(true);
+            }
           }}
-        >
-          Generate an invitation link
-        </Button>
-      </DefaultModal>
-      <Popup
-        onClose={() => setPopup(false)}
-        visible={popup}
-        type={PopupType.Error}
-        message="Could not generate an invitation link, please try again later on..."
-      />
-    </>
+          className="cursor-pointer w-6 h-6"
+        />
+      </Box>
+      <Button
+        onClick={async () => {
+          await execute();
+        }}
+      >
+        Generate an invitation link
+      </Button>
+    </DefaultModal>
   );
 };
 

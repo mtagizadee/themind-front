@@ -5,11 +5,12 @@ import Input from "../components/ui/Input";
 import { lengthRange, isNotEmpty, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH } from "../validators";
 import { AuthController } from "../api";
 import { To, useNavigate } from "react-router-dom";
-import Popup, { PopupType } from "../components/ui/Popup";
+import { PopupType } from "../components/ui/Popup";
 import Button from "../components/ui/Button";
 import useLoading from "../hooks/useLoading";
 import useAuth from "../hooks/useAuth";
 import { privateRoutes } from "../common/routes";
+import usePopup from "../hooks/usePopup";
 
 interface IAddUserPageProps {
   navigateTo?: To;
@@ -21,7 +22,7 @@ const AddUserPage: FC<IAddUserPageProps> = ({
   const [error, setError] = useState<TValidationError>(VALIDATION_ERROR_INITIAL_STATE);
   const { authorize } = useAuth();
   const navigate = useNavigate();
-  const [popup, setPopup] = useState(false);
+  const { displayPopup } = usePopup();
 
   const { execute, isLoading } = useLoading(
     async (nickname: string) => {
@@ -33,7 +34,7 @@ const AddUserPage: FC<IAddUserPageProps> = ({
       navigate(navigateTo);
     },
     () => {
-      setPopup(true);
+      displayPopup("Cound not add a nickname, please try again later on...", PopupType.Error);
     }
   );
 
@@ -61,31 +62,23 @@ const AddUserPage: FC<IAddUserPageProps> = ({
   };
 
   return (
-    <>
-      <div className="center-content full-screen">
-        <Box className="box-600 ">
-          <h1 className="text-center"> Welcome ! </h1>
-          <form onSubmit={onSubmit}>
-            <Input
-              error={error.key !== ErrorKey.NE}
-              errorMessage={error.message}
-              className="my-6"
-              name="nickname"
-              label="Enter your nickname"
-            />
-            <Button type="submit" disabled={isLoading}>
-              Submit
-            </Button>
-          </form>
-        </Box>
-      </div>
-      <Popup
-        type={PopupType.Error}
-        message="Could not add your nickname, please try again later on..."
-        onClose={() => setPopup(false)}
-        visible={popup}
-      />
-    </>
+    <div className="center-content full-screen">
+      <Box className="box-600 ">
+        <h1 className="text-center"> Welcome ! </h1>
+        <form onSubmit={onSubmit}>
+          <Input
+            error={error.key !== ErrorKey.NE}
+            errorMessage={error.message}
+            className="my-6"
+            name="nickname"
+            label="Enter your nickname"
+          />
+          <Button type="submit" disabled={isLoading}>
+            Submit
+          </Button>
+        </form>
+      </Box>
+    </div>
   );
 };
 

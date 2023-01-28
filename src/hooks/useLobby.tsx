@@ -4,6 +4,7 @@ import useEvent from "./useEvent";
 import useEmit from "./useEmit";
 import { useNavigate } from "react-router";
 import { publicRoutes } from "../common/routes";
+import { PopupType } from "../components/ui/Popup";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
@@ -15,7 +16,10 @@ type TUseLobbyResponse = {
  * @param onError - error handler function that will be called if something goes wrong
  * @returns TUseLobbyResponse - lobby object and isLoading flag
  */
-const useLobby = (id: string, setPopup?: (value: boolean) => void): TUseLobbyResponse => {
+const useLobby = (
+  id: string,
+  displayPopup: (message: string, type: PopupType) => void
+): TUseLobbyResponse => {
   const [lobby, setLobby] = useState<TLobby>(lobbyCleaner());
   const navigate = useNavigate();
 
@@ -46,8 +50,8 @@ const useLobby = (id: string, setPopup?: (value: boolean) => void): TUseLobbyRes
       navigate(publicRoutes.notFoundPage);
     }
 
-    if (error.status === 403 && setPopup) {
-      setPopup(true);
+    if (error.status === 403) {
+      displayPopup("You cannot join the Lobby, it is full!", PopupType.Error);
     }
   });
 
