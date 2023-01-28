@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { lobbyCleaner, TLobby, TPlayer, TWsExcention } from "../common/types";
-import useSocket from "./useSocket";
 import useEvent from "./useEvent";
-import useLoading from "./useLoading";
+import useEmit from "./useEmit";
+import { useNavigate } from "react-router";
+import { publicRoutes } from "../common/routes";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
-  isLoading: boolean;
 };
 
 /**
@@ -15,13 +15,12 @@ type TUseLobbyResponse = {
  * @param onError - error handler function that will be called if something goes wrong
  * @returns TUseLobbyResponse - lobby object and isLoading flag
  */
-const useLobby = (id: string): TUseLobbyResponse => {
-  const { connect, disconnect, socket } = useSocket();
+const useLobby = (id: string, setPopup?: (value: boolean) => void): TUseLobbyResponse => {
   const [lobby, setLobby] = useState<TLobby>(lobbyCleaner());
-  const { execute: joinLobby, isLoading } = useLoading(async () => {
-    socket.connection.emit("lobby:join", { lobbyId: id }, (lobby) => {
-      setLobby(lobby);
-    });
+  const navigate = useNavigate();
+
+  const joinLobby = useEmit("lobby:join", { lobbyId: id }, (response) => {
+    setLobby(response);
   });
 
   useEvent("lobby:join", (user: TPlayer) => {
@@ -43,20 +42,24 @@ const useLobby = (id: string): TUseLobbyResponse => {
   });
 
   useEvent("exception", (error: TWsExcention) => {
-    console.log(error);
+    if (error.status === 404) {
+      navigate(publicRoutes.notFoundPage);
+    }
+
+    if (error.status === 403 && setPopup) {
+      setPopup(true);
+    }
   });
 
   useEffect(() => {
-    connect();
     joinLobby();
 
     return () => {
-      socket.connection.emit("lobby:leave", { lobbyId: id });
-      disconnect();
+      // socket.connection.emit("lobby:leave", { lobbyId: id });
     };
   }, [id]);
 
-  return { lobby, isLoading };
+  return { lobby };
 };
 
 export default useLobby;

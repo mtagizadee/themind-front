@@ -1,10 +1,9 @@
 import React, { FC, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Box from "../components/ui/Box";
 import useLobby from "../hooks/useLobby";
 import PageLoader from "../components/PageLoader";
-import { AxiosError } from "axios";
-import { privateRoutes, publicRoutes } from "../common/routes";
+import { privateRoutes } from "../common/routes";
 import { isNotEmpty } from "../validators";
 import { Light, Mikasa, Power, Purple } from "../assets/players";
 import { FiX, FiCopy } from "react-icons/fi";
@@ -16,6 +15,8 @@ import useLoading from "../hooks/useLoading";
 import Popup, { PopupType } from "../components/ui/Popup";
 import { LobbiesController } from "../api";
 import useUser from "../hooks/useUser";
+import { fixResponseDate, objectsAreEqual } from "../common/helpers";
+import { lobbyCleaner } from "../common/types";
 
 type TLobbyPageParams = {
   id: string;
@@ -23,18 +24,14 @@ type TLobbyPageParams = {
 
 const LobbyPage = () => {
   const { id } = useParams<TLobbyPageParams>();
-  const { lobby, isLoading, error } = useLobby(id as any);
   const [backWarningModal, openBackWarningModal, closeBackWarningModal] = useToggle();
   const [startWarningModal, openStartWarningModal, closeStartWarningModal] = useToggle();
   const [inviteModal, openInviteModal, closeInviteModal] = useToggle();
   const navigate = useNavigate();
   const { id: clientId } = useUser();
+  const { lobby } = useLobby(id as any);
 
-  // Handle loading and error
-  if (isLoading) return <PageLoader />;
-  if (error instanceof AxiosError && error.response?.status === 404)
-    return <Navigate to={publicRoutes.notFoundPage} />;
-
+  if (objectsAreEqual(lobby, lobbyCleaner())) return <PageLoader />;
   const isAuthor = lobby.authorId === clientId;
 
   return (
@@ -48,7 +45,7 @@ const LobbyPage = () => {
           <section>
             <h1> Lobby </h1>
             <p>
-              Expires at: <time> {lobby.expiresAt} </time>
+              Expires at: <time> {fixResponseDate(lobby.expiresAt)} </time>
             </p>
             <hr className="mb-6 mt-3 border-gray-700" />
           </section>
