@@ -3,7 +3,7 @@ import { lobbyCleaner, TLobby, TPlayer, TWsExcention } from "../common/types";
 import useEvent from "./useEvent";
 import useEmit from "./useEmit";
 import { useNavigate } from "react-router";
-import { publicRoutes } from "../common/routes";
+import { privateRoutes, publicRoutes } from "../common/routes";
 import { PopupType } from "../components/ui/Popup";
 
 type TUseLobbyResponse = {
@@ -52,6 +52,7 @@ const useLobby = (
 
     if (error.status === 403) {
       displayPopup("You cannot join the Lobby, it is full!", PopupType.Error);
+      navigate(privateRoutes.lobbiesRoutes.create);
     }
   });
 
