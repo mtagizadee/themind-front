@@ -8,6 +8,7 @@ import { PopupType } from "../components/ui/Popup";
 
 type TUseLobbyResponse = {
   lobby: TLobby;
+  startGame: () => void;
 };
 
 /**
@@ -27,6 +28,16 @@ const useLobby = (
     setLobby(response);
   });
 
+  /**
+   * Handler that redirects user to game page for the start event and start emit
+   * @param game - game object that we get from server
+   */
+  const startGameHandler = (game: { id: string }) => {
+    navigate(privateRoutes.game(game.id));
+  };
+
+  const startGame = useEmit("lobby:start", { lobbyId: id }, startGameHandler);
+
   useEvent("lobby:join", (user: TPlayer) => {
     setLobby((lobby) => {
       return {
@@ -45,6 +56,8 @@ const useLobby = (
     });
   });
 
+  useEvent("lobby:start", startGameHandler);
+
   useEvent("exception", (error: TWsExcention) => {
     if (error.status === 404) {
       navigate(publicRoutes.notFoundPage);
@@ -56,10 +69,6 @@ const useLobby = (
     }
   });
 
-  useEvent("lobby:start", (game: { id: string }) => {
-    navigate(privateRoutes.game(game.id));
-  });
-
   useEffect(() => {
     joinLobby();
 
@@ -68,7 +77,7 @@ const useLobby = (
     };
   }, [id]);
 
-  return { lobby };
+  return { lobby, startGame };
 };
 
 export default useLobby;

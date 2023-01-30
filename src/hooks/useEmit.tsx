@@ -16,7 +16,11 @@ const useEmit = (
   const { socket } = useSocket();
 
   return () => {
-    socket.connection.emit(event, data, handler as unknown as any);
+    if (handler) {
+      socket.connection.emit(event, data, handler as unknown as any);
+    } else {
+      socket.connection.emit(event, data);
+    }
   };
 };
 

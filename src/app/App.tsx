@@ -9,6 +9,7 @@ import BasicLayout from "../components/layout/BasicLayout";
 import LobbyPage from "../pages/LobbyPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import InvitationPage from "../pages/InvitationPage";
+import GamePage from "../pages/GamePage";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
                 />
                 <Route path={privateRoutes.lobbiesRoutes.lobby()} element={<LobbyPage />} />
               </Route>
+              <Route path={privateRoutes.game()} element={<GamePage />} />
             </Route>
           </Route>
 
