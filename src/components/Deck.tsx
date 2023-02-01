@@ -15,12 +15,11 @@ import PlayingCard from "./cards/PlayingCard";
 const Deck = () => {
   const { game } = useGameFlow();
   const { cards } = game.client;
-  const temp = ["1", "2", "3", ...cards];
-  const middleIndex = findMiddleIndex(temp);
+  const middleIndex = findMiddleIndex(cards);
 
   return (
-    <section className="flex">
-      {temp.map((card, index) => {
+    <section className="flex fixed -bottom-4">
+      {cards.map((card, index) => {
         const rotationAngle = calculateRotationAngle(index, middleIndex);
         const downwardShift = calculateDownwardShift(index, middleIndex);
         const xShift = calculateXShift(index, middleIndex);

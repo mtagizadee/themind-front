@@ -15,7 +15,10 @@ interface IPlayingCardProps {
  */
 const PlayingCard: FC<IPlayingCardProps> = ({ card, hidden, toPlay }) => {
   return (
-    <Card hidden={hidden}>
+    <Card
+      hidden={hidden}
+      className={toPlay ? "cursor-pointer transition-all hover:-translate-y-10" : ""}
+    >
       <main className="font-bold text-5xl">{card}</main>
     </Card>
   );

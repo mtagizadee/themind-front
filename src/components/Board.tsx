@@ -11,7 +11,7 @@ const Board = () => {
   const { game } = useGameFlow();
 
   return (
-    <Box>
+    <Box className="min-h-[300px] box-600 mb-16">
       {game.board.map((card) => (
         <PlayingCard hidden={false} toPlay={false} card={card} key={card} />
       ))}

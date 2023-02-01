@@ -10,7 +10,7 @@ const GamePage = () => {
   return (
     <GameProvider id={id as unknown as string}>
       <div className="center-content full-screen font-bold">
-        {/* <Board /> */}
+        <Board />
         <Deck />
       </div>
     </GameProvider>
