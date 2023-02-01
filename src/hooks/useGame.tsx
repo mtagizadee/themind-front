@@ -25,7 +25,7 @@ const useGame = (id: string) => {
     };
   }, []);
 
-  return { game, isLoading };
+  return { game, setGame, isLoading };
 };
 
 export default useGame;
