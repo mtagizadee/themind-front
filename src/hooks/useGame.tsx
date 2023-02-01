@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react";
+import { GamesController } from "../api";
 import { gameCleaner, TGame } from "../common/types";
 import useFetch from "./useFetch";
 
 const useGame = (id: string) => {
   const [game, setGame] = useState<TGame>(gameCleaner());
-  const [execute, isLoading] = useFetch(() => {});
+  const [fetchGame, isLoading] = useFetch(async () => {
+    const game = await GamesController.findOne(id);
+    setGame(game);
+  });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchGame();
 
-  return { isLoading };
+    return () => {
+      setGame(gameCleaner());
+    };
+  }, []);
+
+  return { game, isLoading };
 };
 
 export default useGame;
