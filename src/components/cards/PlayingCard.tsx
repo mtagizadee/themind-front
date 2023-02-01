@@ -5,6 +5,7 @@ import Card from "./Card";
 interface IPlayingCardProps {
   card: TCard;
   hidden: boolean;
+  toPlay: boolean;
 }
 
 /**
@@ -12,8 +13,12 @@ interface IPlayingCardProps {
  * @param card - card's value
  * @returns JSX.Element - card container with it's value
  */
-const PlayingCard: FC<IPlayingCardProps> = ({ card, hidden }) => {
-  return <Card hidden={hidden}>{card}</Card>;
+const PlayingCard: FC<IPlayingCardProps> = ({ card, hidden, toPlay }) => {
+  return (
+    <Card hidden={hidden}>
+      <main className="font-bold text-5xl">{card}</main>
+    </Card>
+  );
 };
 
 export default PlayingCard;

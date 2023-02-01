@@ -1,5 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
+import Board from "../components/Board";
+import Deck from "../components/Deck";
 import GameProvider from "../contexts/GameProvider";
 
 const GamePage = () => {
@@ -8,7 +10,8 @@ const GamePage = () => {
   return (
     <GameProvider id={id as unknown as string}>
       <div className="center-content full-screen font-bold">
-        <h1>Game Page: {id}</h1>
+        {/* <Board /> */}
+        <Deck />
       </div>
     </GameProvider>
   );

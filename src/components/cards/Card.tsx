@@ -11,7 +11,15 @@ interface ICardProps {
  * @returns JSX.Element - card container
  */
 const Card: FC<ICardProps> = ({ children, hidden }) => {
-  return <div>{children}</div>;
+  return (
+    <div className="min-h-[180px] w-screen max-w-[160px] rounded-xl">
+      <header className="card-header-footer rounded-t-xl" />
+      <main className="center-content min-h-[180px] dark:bg-gray-800 dark:border-gray-700 border">
+        {children}
+      </main>
+      <footer className="card-header-footer rounded-b-xl" />
+    </div>
+  );
 };
 
 export default Card;
