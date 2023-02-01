@@ -4,6 +4,11 @@ import { gameCleaner, TGame } from "../common/types";
 import useFetch from "./useFetch";
 import useUser from "./useUser";
 
+/**
+ * Hook that handles game logic with socket events and emits
+ * @param id  - game id that we want to work with
+ * @returns game object and isLoading flag
+ */
 const useGame = (id: string) => {
   const [game, setGame] = useState<TGame>(gameCleaner());
   const { id: currentUserId } = useUser();
