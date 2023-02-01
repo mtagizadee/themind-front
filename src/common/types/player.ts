@@ -14,3 +14,10 @@ export const playerFactory = (data: TPlayerResponseData): TPlayer => {
     id: data.id,
   };
 };
+
+export const playerCleaner = (): TPlayer => {
+  return {
+    nickname: "",
+    id: "",
+  };
+};

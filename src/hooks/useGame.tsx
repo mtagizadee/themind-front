@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { GamesController } from "../api";
 import { gameCleaner, TGame } from "../common/types";
 import useFetch from "./useFetch";
+import useUser from "./useUser";
 
 const useGame = (id: string) => {
   const [game, setGame] = useState<TGame>(gameCleaner());
+  const { id: currentUserId } = useUser();
   const [fetchGame, isLoading] = useFetch(async () => {
-    const game = await GamesController.findOne(id);
+    const game = await GamesController.findOne(id, currentUserId);
     setGame(game);
   });
 

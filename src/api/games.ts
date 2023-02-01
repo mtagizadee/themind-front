@@ -2,9 +2,9 @@ import { gameFactory } from "../common/types";
 import { privateApi } from "./config";
 
 export class GamesController {
-  static async findOne(id: string) {
+  static async findOne(id: string, currentUserId: string) {
     const url = "/games/" + id;
     const response = await privateApi.get(url);
-    return gameFactory(response.data);
+    return gameFactory(response.data, currentUserId);
   }
 }
