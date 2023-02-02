@@ -53,6 +53,6 @@ export const gameCleaner = (): TGame => {
     lastLevel: 0,
     lives: 0,
     hasShootingStar: false,
-    expiresAt: new Date(),
+    expiresAt: "" as unknown as Date,
   };
 };

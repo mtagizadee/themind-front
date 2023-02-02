@@ -13,8 +13,8 @@ const useGame = (id: string) => {
   const [game, setGame] = useState<TGame>(gameCleaner());
   const { id: currentUserId } = useUser();
   const [fetchGame, isLoading] = useFetch(async () => {
-    const game = await GamesController.findOne(id, currentUserId);
-    setGame(game);
+    const data = await GamesController.findOne(id, currentUserId);
+    setGame(data);
   });
 
   useEffect(() => {

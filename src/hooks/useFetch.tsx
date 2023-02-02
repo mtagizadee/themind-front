@@ -23,12 +23,12 @@ type TUseFetchResponse = [(...args: any) => Promise<void>, boolean, any];
  *   };
  *  }, [id]);
  */
-const useFetch = (callback: (...args: any) => void) => {
+const useFetch = (callback: (...args: any) => Promise<void>) => {
   const [error, setError] = useState<any>(null);
 
   const { execute, isLoading } = useLoading(
     async (...args) => {
-      callback(...args);
+      await callback(...args);
     },
     (error) => {
       setError(error);

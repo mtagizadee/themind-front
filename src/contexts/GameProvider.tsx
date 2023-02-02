@@ -1,5 +1,6 @@
 import React, { createContext, FC, ReactNode } from "react";
-import { TGame } from "../common/types";
+import { objectsAreEqual } from "../common/helpers";
+import { gameCleaner, TGame } from "../common/types";
 import PageLoader from "../components/PageLoader";
 import useGame from "../hooks/useGame";
 
@@ -23,7 +24,7 @@ export const GameContext = createContext<TGameContext>({} as any);
 const GameProvider: FC<IGameProviderProps> = ({ children, id }) => {
   const { game, isLoading } = useGame(id);
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading || objectsAreEqual(game, gameCleaner())) return <PageLoader />;
 
   return <GameContext.Provider value={{ game }}>{children}</GameContext.Provider>;
 };
