@@ -19,7 +19,7 @@ const PlayingCard: FC<IPlayingCardProps> = ({ card, hidden, toPlay }) => {
       hidden={hidden}
       className={toPlay ? "cursor-pointer transition-all hover:-translate-y-10" : ""}
     >
-      <main className="font-bold text-5xl">{card}</main>
+      <span className="font-bold text-5xl">{card}</span>
     </Card>
   );
 };

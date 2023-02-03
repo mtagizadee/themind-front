@@ -67,6 +67,7 @@ const Deck = () => {
                   isMiddleCard ? 0 : isLeftCard ? xShift : -xShift
                 }px)`,
               }}
+              className="pop-up"
             >
               <PlayingCard card={card} hidden={false} toPlay={true} />
             </div>

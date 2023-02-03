@@ -15,11 +15,11 @@ interface ICardProps {
 const Card: FC<ICardProps> = ({ children, hidden, className }) => {
   return (
     <div className={twMerge("min-h-[180px] w-screen max-w-[160px] rounded-xl", className)}>
-      <header className="card-header-footer rounded-t-xl" />
-      <main className="center-content min-h-[180px] dark:bg-gray-800 dark:border-gray-700 border">
+      <div className="card-header-footer rounded-t-xl" />
+      <span className="center-content min-h-[180px] dark:bg-gray-800 dark:border-gray-700 border">
         {!hidden ? children : "The Mind"}
-      </main>
-      <footer className="card-header-footer rounded-b-xl" />
+      </span>
+      <div className="card-header-footer rounded-b-xl" />
     </div>
   );
 };
