@@ -18,6 +18,8 @@ import useUser from "../hooks/useUser";
 import { fixResponseDate, objectsAreEqual } from "../common/helpers";
 import { lobbyCleaner } from "../common/types";
 import usePopup from "../hooks/usePopup";
+import { orderToPlayerData } from "../common/constants";
+import ProfileImage from "../components/ui/ProfileImage";
 
 type TLobbyPageParams = {
   id: string;
@@ -172,46 +174,17 @@ interface IInvitedPlayerProps {
 }
 
 /**
- * Map of order to player data
- * @important
- * This data is static and cannot be changed.
- * It is used only for image and description of the player in lobby
- */
-const orderToPlayerData = {
-  1: {
-    image: Mikasa,
-    description: "Oh, no. Not this again...",
-  },
-  2: {
-    image: Power,
-    description: "Do you want to play with me?",
-  },
-  3: {
-    image: Purple,
-    description: "Are we too young for this?",
-  },
-  4: {
-    image: Light,
-    description: "I want you to do it again...",
-  },
-};
-
-/**
  * Component to display a joined player in the lobby
  * @param IInvitedPlayerProps
  * @returns JSX.Element
  */
 const InvitedPlayer: FC<IInvitedPlayerProps> = ({ nickname, isAdmin, order }) => {
-  const orderData = (orderToPlayerData as any)[order];
+  const orderData = (orderToPlayerData as any).lobby[order];
 
   return (
     <li>
       <div className="items-center p-3 flex hover:bg-gray-100 dark:hover:bg-gray-700">
-        <img
-          className="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-          src={orderData.image}
-          alt={nickname}
-        />
+        <ProfileImage image={orderData.image} nickname={nickname} />
         <div className="text-gray-600 dark:text-gray-400">
           <div className="text-base font-normal"> {nickname} </div>
           <div className="text-sm font-normal">{orderData.description}</div>

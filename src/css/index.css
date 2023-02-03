@@ -106,4 +106,16 @@ input[type="number"] {
   .box-400 {
     @apply w-screen max-w-[400px];
   }
+
+  .box-300 {
+    @apply w-screen max-w-[300px];
+  }
+
+  .box-200 {
+    @apply w-screen max-w-[200px];
+  }
+
+  .box-100 {
+    @apply w-screen max-w-[100px];
+  }
 }
