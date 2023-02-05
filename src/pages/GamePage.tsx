@@ -14,7 +14,7 @@ const GamePage = () => {
   return (
     <GameProvider id={id as unknown as string}>
       <div className="center-content full-screen">
-        <section className="center-row gap-3">
+        <section className="relative">
           <Board />
           <GameStats />
         </section>
@@ -29,8 +29,11 @@ const GameStats = () => {
   const { game } = useGameFlow();
 
   return (
-    <Box>
+    <Box className="center-col absolute -right-36 top-0">
       <LivesBar />
+      <p className="mt-3 text-sm">
+        <span className="font-bold">Level:</span> {game.currentLevel} / {game.lastLevel}
+      </p>
     </Box>
   );
 };

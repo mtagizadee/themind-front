@@ -22,7 +22,7 @@ const Bar: FC<IBarProps> = ({
   return (
     <div className="center-row gap-2">
       {getNumbersTo(maxValue).map((number) => {
-        return <Element key={number}>{number <= currrentValue ? element : emptyElement}</Element>;
+        return <Element key={number}>{number < currrentValue ? element : emptyElement}</Element>;
       })}
     </div>
   );
