@@ -25,6 +25,5 @@ export const orderToPlayerData = {
       description: "I want you to do it again...",
     },
   },
-  // TODO: Add player data for the players in the game...
   game: {},
 };

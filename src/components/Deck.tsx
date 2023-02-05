@@ -74,14 +74,16 @@ const Deck = () => {
           );
         })}
       </div>
-      <div className="center-col absolute right-0 top-12 gap-3 text-2xl pr-6">
-        <button onClick={decrementChunk}>
-          <FiArrowUp />
-        </button>
-        <button>
-          <FiArrowDown onClick={incrementChunk} />
-        </button>
-      </div>
+      {game.currentLevel >= CHUNK_SIZE ? (
+        <div className="center-col absolute right-0 top-12 gap-3 text-2xl pr-6">
+          <button onClick={decrementChunk}>
+            <FiArrowUp />
+          </button>
+          <button>
+            <FiArrowDown onClick={incrementChunk} />
+          </button>
+        </div>
+      ) : null}
     </section>
   );
 };

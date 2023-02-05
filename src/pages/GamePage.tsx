@@ -4,6 +4,8 @@ import Board from "../components/Board";
 import Deck from "../components/Deck";
 import PlayersList from "../components/PlayersList";
 import GameProvider from "../contexts/GameProvider";
+import useGameFlow from "../hooks/useGameFlow";
+import Box from "../components/ui/Box";
 
 const GamePage = () => {
   const { id } = useParams();
@@ -11,12 +13,21 @@ const GamePage = () => {
   return (
     <GameProvider id={id as unknown as string}>
       <div className="center-content full-screen">
-        <Board />
+        <section className="center-row gap-3">
+          <Board />
+          <GameStats />
+        </section>
         <PlayersList />
         <Deck />
       </div>
     </GameProvider>
   );
+};
+
+const GameStats = () => {
+  const { game } = useGameFlow();
+
+  return <Box> </Box>;
 };
 
 export default GamePage;

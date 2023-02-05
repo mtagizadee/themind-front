@@ -8,6 +8,7 @@ export type TGame = {
   currentLevel: number;
   lastLevel: number;
   lives: number;
+  maxLives: number;
   hasShootingStar: boolean;
   expiresAt: Date;
 };
@@ -22,6 +23,7 @@ export type TGameResponseData = {
   currentLevel: number;
   lastLevel: number;
   lives: number;
+  maxLives: number;
   hasShootingStar: boolean;
   expiresAt: Date;
 };
@@ -39,6 +41,7 @@ export const gameFactory = (data: TGameResponseData, currentUserId: string): TGa
     currentLevel: data.currentLevel,
     lastLevel: data.lastLevel,
     lives: data.lives,
+    maxLives: data.maxLives,
     hasShootingStar: data.hasShootingStar,
     expiresAt: data.expiresAt,
   };
@@ -52,6 +55,7 @@ export const gameCleaner = (): TGame => {
     currentLevel: 0,
     lastLevel: 0,
     lives: 0,
+    maxLives: 0,
     hasShootingStar: false,
     expiresAt: "" as unknown as Date,
   };
