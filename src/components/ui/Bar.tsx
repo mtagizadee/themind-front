@@ -11,6 +11,17 @@ interface IBarProps {
   decrease?: () => void;
 }
 
+/**
+ * A bar component with which can display and handle the value of a bar
+ * @param currrentValue - the current value of the bar
+ * @param maxValue - the max value of the bar
+ * @param element - the element to display when the value is not empty
+ * @param emptyElement - the element to display when the value is empty
+ * @param changable - if the bar is changable
+ * @param increase - the function to increase the value
+ * @param decrease - the function to decrease the value
+ * @returns
+ */
 const Bar: FC<IBarProps> = ({
   currrentValue,
   maxValue,

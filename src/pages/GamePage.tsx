@@ -7,6 +7,7 @@ import GameProvider from "../contexts/GameProvider";
 import useGameFlow from "../hooks/useGameFlow";
 import Box from "../components/ui/Box";
 import LivesBar from "../components/LivesBar";
+import ShootingStarCard from "../components/cards/ShootingStarCard";
 
 const GamePage = () => {
   const { id } = useParams();
@@ -14,7 +15,8 @@ const GamePage = () => {
   return (
     <GameProvider id={id as unknown as string}>
       <div className="center-content full-screen">
-        <section className="relative">
+        <section className="flex items-start gap-3">
+          <ShootingStar />
           <Board />
           <GameStats />
         </section>
@@ -29,13 +31,19 @@ const GameStats = () => {
   const { game } = useGameFlow();
 
   return (
-    <Box className="center-col absolute -right-36 top-0">
+    <Box className="center-col">
       <LivesBar />
       <p className="mt-3 text-sm">
         <span className="font-bold">Level:</span> {game.currentLevel} / {game.lastLevel}
       </p>
     </Box>
   );
+};
+
+const ShootingStar = () => {
+  const { game } = useGameFlow();
+
+  return <ShootingStarCard exist={game.hasShootingStar} />;
 };
 
 export default GamePage;
