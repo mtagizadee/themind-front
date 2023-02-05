@@ -7,3 +7,7 @@ export const fixResponseDate = (responseDate: string) => {
 export const objectsAreEqual = (obj1: any, obj2: any) => {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 };
+
+export const getNumbersTo = (to: number) => {
+  return Array.from(Array(to).keys());
+};

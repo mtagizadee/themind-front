@@ -6,6 +6,7 @@ import PlayersList from "../components/PlayersList";
 import GameProvider from "../contexts/GameProvider";
 import useGameFlow from "../hooks/useGameFlow";
 import Box from "../components/ui/Box";
+import LivesBar from "../components/LivesBar";
 
 const GamePage = () => {
   const { id } = useParams();
@@ -27,7 +28,11 @@ const GamePage = () => {
 const GameStats = () => {
   const { game } = useGameFlow();
 
-  return <Box> </Box>;
+  return (
+    <Box>
+      <LivesBar />
+    </Box>
+  );
 };
 
 export default GamePage;

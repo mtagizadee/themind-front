@@ -68,6 +68,10 @@ input[type="number"] {
   .card-header-footer {
     @apply bg-red-500 dark:bg-gray-700 min-h-[35px];
   }
+
+  .live {
+    @apply text-5xl;
+  }
 }
 
 @layer utilities {
