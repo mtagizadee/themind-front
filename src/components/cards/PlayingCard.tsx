@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, CSSProperties } from "react";
 import { TCard } from "../../common/types";
 import Card from "./Card";
 
@@ -6,6 +6,8 @@ interface IPlayingCardProps {
   card: TCard;
   hidden: boolean;
   toPlay: boolean;
+  className?: string;
+  style?: CSSProperties;
 }
 
 /**
@@ -13,11 +15,14 @@ interface IPlayingCardProps {
  * @param card - card's value
  * @returns JSX.Element - card container with it's value
  */
-const PlayingCard: FC<IPlayingCardProps> = ({ card, hidden, toPlay }) => {
+const PlayingCard: FC<IPlayingCardProps> = ({ card, hidden, toPlay, className, style }) => {
   return (
     <Card
+      style={style}
       hidden={hidden}
-      className={toPlay ? "cursor-pointer transition-all hover:-translate-y-10" : ""}
+      className={`${
+        toPlay ? "cursor-pointer transition-all hover:-translate-y-10" : ""
+      } ${className}`}
     >
       <span className="font-bold text-5xl">{card}</span>
     </Card>

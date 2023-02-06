@@ -11,3 +11,7 @@ export const objectsAreEqual = (obj1: any, obj2: any) => {
 export const getNumbersTo = (to: number) => {
   return Array.from(Array(to).keys());
 };
+
+export const generateRandomAngle = () => {
+  return Math.floor(Math.random() * 360);
+};
