@@ -67,6 +67,10 @@ const useLobby = (
       displayPopup("You cannot join the Lobby, it is full!", PopupType.Error);
       navigate(privateRoutes.lobbiesRoutes.create);
     }
+
+    if (error.status === 403) {
+      displayPopup("You need at least 2 players to start the game!", PopupType.Error);
+    }
   });
 
   useEffect(() => {
