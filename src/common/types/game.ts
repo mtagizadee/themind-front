@@ -37,7 +37,7 @@ export const gameFactory = (data: TGameResponseData, currentUserId: string): TGa
   return {
     client,
     players,
-    board: ["1", "2", "3", "4"],
+    board: data.board,
     currentLevel: data.currentLevel,
     lastLevel: data.lastLevel,
     lives: data.lives,
