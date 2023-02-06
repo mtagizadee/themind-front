@@ -1,6 +1,6 @@
 import React, { createContext, FC, ReactNode } from "react";
 import { objectsAreEqual } from "../common/helpers";
-import { gameCleaner, TGame } from "../common/types";
+import { gameCleaner, TCard, TGame } from "../common/types";
 import PageLoader from "../components/PageLoader";
 import useGame from "../hooks/useGame";
 
@@ -11,6 +11,9 @@ interface IGameProviderProps {
 
 export type TGameContext = {
   game: TGame;
+  updateBoard: (newBoard: TCard[]) => void;
+  updateDeck: (newDeck: TCard[]) => void;
+  playCard: (card: TCard) => void;
 };
 
 export const GameContext = createContext<TGameContext>({} as any);
@@ -22,11 +25,15 @@ export const GameContext = createContext<TGameContext>({} as any);
  * @returns JSX.Element - game provider
  */
 const GameProvider: FC<IGameProviderProps> = ({ children, id }) => {
-  const { game, isLoading } = useGame(id);
+  const { game, isLoading, updateDeck, updateBoard, playCard } = useGame(id);
 
   if (isLoading || objectsAreEqual(game, gameCleaner())) return <PageLoader />;
 
-  return <GameContext.Provider value={{ game }}>{children}</GameContext.Provider>;
+  return (
+    <GameContext.Provider value={{ game, updateBoard, updateDeck, playCard }}>
+      {children}
+    </GameContext.Provider>
+  );
 };
 
 export default GameProvider;

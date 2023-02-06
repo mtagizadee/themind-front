@@ -16,6 +16,8 @@ export const calculateXShift = (index: number, middleIndex: number) => {
 };
 
 export const findMiddleIndex = (cards: TCard[]) => {
+  if (!cards?.length) return 0;
+
   return Math.floor(cards.length / 2);
 };
 

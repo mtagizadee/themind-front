@@ -37,7 +37,7 @@ const Deck = () => {
   // split the cards into chunks to display them in the deck in a better way
   const chunks = useMemo(() => {
     const chunks = [];
-    for (let i = 0; i < cards.length; i += CHUNK_SIZE) {
+    for (let i = 0; i < cards?.length; i += CHUNK_SIZE) {
       chunks.push(cards.slice(i, i + CHUNK_SIZE));
     }
 
@@ -49,30 +49,32 @@ const Deck = () => {
   return (
     <section className="fixed -bottom-4 box-700">
       <div className="w-full center-content">
-        {chunk.map((card, index) => {
-          const rotationAngle = calculateRotationAngle(index, middleIndex);
-          const downwardShift = calculateDownwardShift(index, middleIndex);
-          const xShift = calculateXShift(index, middleIndex);
+        {chunk?.length
+          ? chunk.map((card, index) => {
+              const rotationAngle = calculateRotationAngle(index, middleIndex);
+              const downwardShift = calculateDownwardShift(index, middleIndex);
+              const xShift = calculateXShift(index, middleIndex);
 
-          const isMiddleCard = index === middleIndex;
-          const isLeftCard = isInLeft(index, middleIndex);
+              const isMiddleCard = index === middleIndex;
+              const isLeftCard = isInLeft(index, middleIndex);
 
-          return (
-            <div
-              key={card}
-              style={{
-                transform: `rotate(${
-                  isMiddleCard ? 0 : isLeftCard ? -rotationAngle : rotationAngle
-                }deg) translateY(${isMiddleCard ? 0 : downwardShift}px) translateX(${
-                  isMiddleCard ? 0 : isLeftCard ? xShift : -xShift
-                }px)`,
-              }}
-              className="pop-up"
-            >
-              <PlayingCard card={card} hidden={false} toPlay={true} />
-            </div>
-          );
-        })}
+              return (
+                <div
+                  key={card}
+                  style={{
+                    transform: `rotate(${
+                      isMiddleCard ? 0 : isLeftCard ? -rotationAngle : rotationAngle
+                    }deg) translateY(${isMiddleCard ? 0 : downwardShift}px) translateX(${
+                      isMiddleCard ? 0 : isLeftCard ? xShift : -xShift
+                    }px)`,
+                  }}
+                  className="pop-up"
+                >
+                  <PlayingCard card={card} hidden={false} toPlay={true} />
+                </div>
+              );
+            })
+          : null}
       </div>
       {game.currentLevel >= CHUNK_SIZE ? (
         <div className="center-col absolute right-0 top-12 gap-3 text-2xl pr-6">

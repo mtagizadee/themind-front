@@ -1,5 +1,6 @@
 import React, { FC, CSSProperties } from "react";
 import { TCard } from "../../common/types";
+import useGameFlow from "../../hooks/useGameFlow";
 import Card from "./Card";
 
 interface IPlayingCardProps {
@@ -16,8 +17,15 @@ interface IPlayingCardProps {
  * @returns JSX.Element - card container with it's value
  */
 const PlayingCard: FC<IPlayingCardProps> = ({ card, hidden, toPlay, className, style }) => {
+  const { playCard } = useGameFlow();
+
   return (
     <Card
+      onClick={() => {
+        if (toPlay) {
+          playCard(card);
+        }
+      }}
       style={style}
       hidden={hidden}
       className={`${
